@@ -1,12 +1,12 @@
 <template>
     <div id="guide">
         <h1> Table Of Games </h1>
-        <Chat/>
+        <Register/>
     </div>
 </template>
 
 <script>
-import Chat from '@/components/Chat'
+import Register from '@/components/Register'
 
 export default {
     name: 'TableOfGames',
@@ -16,7 +16,7 @@ export default {
         }
     },
   components: {
-    Chat
+    Register
   }
 }
 </script>
