@@ -26,6 +26,7 @@
 import db from '@/firebase/init'
 import slugify from 'slugify'
 import firebase from 'firebase'
+
 export default {
   name: 'Signup',
   data(){
