@@ -8,6 +8,8 @@
                     <b-nav-item :to="{ name: 'TableOfGames'}"> Table Of Games </b-nav-item>
                     <b-nav-item :to="{ name: 'Guide'}"> Guide </b-nav-item>
                     <b-nav-item :to="{ name: 'About'}"> About </b-nav-item>
+                    <b-nav-item :to="{ name: 'Signup'}"> Signup </b-nav-item>
+                    <b-nav-item :to="{ name: 'About'}"> Signin </b-nav-item>      
                     <!-- <b-nav-item :to="{ name: 'About'}"> <span class="glyphicon glyphicon-log-in"></span> Login </b-nav-item>  -->
                 </b-navbar-nav>
             </b-collapse>

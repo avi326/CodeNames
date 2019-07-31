@@ -6,10 +6,12 @@ import Guide from '@/components/Guide'
 import TableOfGames from '@/components/TableOfGames'
 import Register from '@/components/Register'
 import Chat from '@/components/Chat'
+import Signup from '@/components/auth/Signup'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -49,6 +51,11 @@ export default new Router({
         }
 
       }
+    },
+    {
+      path: '/signup',
+      name: 'Signup',
+      component: Signup
     }
   ]
 })
