@@ -2,7 +2,7 @@
     <div class="chat">
         <h2> chat </h2>
             <b-card>
-                <ul class="messages" v-chat-scroll>
+                <ul class="messages" v-chat-scroll> <!-- print all message -->
                 <li v-for="message in messages" :key="message.id">
                     <span class="name">{{ message.name }}</span>
                     <span class="content">{{ message.content }}</span>
