@@ -26,7 +26,6 @@
 import db from '@/firebase/init'
 import slugify from 'slugify'
 import firebase from 'firebase'
-
 export default {
   name: 'Signup',
   data(){
@@ -54,8 +53,17 @@ export default {
           } else {
           // this alias does not yet exists in the db
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+            .then(cred => {
+             user => {
+              ref.set({
+                alias: this.alias,
+                points: 0,
+                user_id: user.uid
+              })
+              }}).then(() => {
+              this.$router.push({ name: 'TableOfGames' })
+            })
             .catch(err => {
-              console.log(err.message)
               this.feedback = err.message
             })
           }
