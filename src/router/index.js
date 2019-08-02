@@ -7,6 +7,7 @@ import TableOfGames from '@/components/TableOfGames'
 import Register from '@/components/Register'
 import Chat from '@/components/Chat'
 import Signup from '@/components/auth/Signup'
+import Login from '@/components/auth/Login'
 
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/signup',
       name: 'Signup',
       component: Signup
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })
