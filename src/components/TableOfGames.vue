@@ -7,6 +7,7 @@
 
 <script>
 import Register from '@/components/Register'
+import firebase from 'firebase'
 
 export default {
     name: 'TableOfGames',
@@ -17,6 +18,9 @@ export default {
     },
   components: {
     Register
+  },
+  mounted () {
+    console.log(firebase.auth().currentUser)
   }
 }
 </script>

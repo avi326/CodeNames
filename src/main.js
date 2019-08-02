@@ -7,15 +7,26 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueChatScroll from 'vue-chat-scroll'
+import firebase from 'firebase'
 
 Vue.use(VueChatScroll)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+let app = null
+
+// what for firebase auth to init before creating into app
+firebase.auth().onAuthStateChanged(() => {
+
+  // init app if not aleardy created
+  if (!app){
+    app = new Vue({
+      el: '#app',
+      router,
+      components: { App },
+      template: '<App/>'
+    })
+}
+  
+
 })
