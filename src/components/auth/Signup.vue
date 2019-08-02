@@ -54,13 +54,12 @@ export default {
           // this alias does not yet exists in the db
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
             .then(cred => {
-             user => {
               ref.set({
                 alias: this.alias,
                 points: 0,
-                user_id: user.uid
+                user_id: cred.user.uid
               })
-              }}).then(() => {
+              }).then(() => {
               this.$router.push({ name: 'TableOfGames' })
             })
             .catch(err => {
