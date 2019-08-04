@@ -83,13 +83,24 @@
                     </tr>
                 </table>
             </div>
+
+            <div class="MultiSelectWords">
+                <MultiSelectWords/>
+            </div>
+
         </div>
 </template>
 
 <script>
+import MultiSelectWords from '@/components/game/MultiSelectWords'
+
 export default {
+components: {
+    MultiSelectWords
+}
 
 }
+
 </script>
 
 <style>
@@ -133,5 +144,12 @@ table.mapTable.td.black {
     width: 100%;
     padding-bottom: 100%; /* = width for a 1:1 aspect ratio */
     background-color: rgb(0, 0, 0);
+}
+
+div.MultiSelectWords {
+    margin-left:auto; 
+    margin-right:auto;
+    text-align: center;
+    width: 300px;
 }
 </style>
