@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="game">
         <div style="text-align: center">
             <h3 class="lead text-center"> לוח מילים</h3>
             <table class="table table-bordered text-center words">
@@ -43,7 +43,7 @@
             </table>
         </div>
 
-            <div style="text-align: center">
+            <div class="mapTable">
                 <h3 class="lead text-center">מפת המשחק שלך</h3>
                 <table style="width:15%" class="table table-bordered mapTable">
                     <tr>
@@ -95,6 +95,7 @@
 import MultiSelectWords from '@/components/game/MultiSelectWords'
 
 export default {
+name: 'Game',
 components: {
     MultiSelectWords
 }
@@ -104,17 +105,21 @@ components: {
 </script>
 
 <style>
-
+div.game {
+    direction: rtl;
+    text-align: center
+    
+}
 table.words {
     margin-left:auto; 
     margin-right:auto;
-        text-align: center
+    text-align: center
 }
 
 table.mapTable {
     margin-left:auto; 
     margin-right:auto;
-        text-align: center
+    text-align: center
 }
 
 table.mapTable {
