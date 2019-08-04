@@ -10,15 +10,17 @@
           <tr>
               <th>Name1</th>
               <th>Name2</th>
-              <th>play</th>
+              <th>num of players now</th>
           </tr>
         </thead>
 
         <tbody>
           <tr v-for="game in games" :key="game.id">
             <td> {{ game.player1 }}</td>
-            <td> {{ game.player2 }}</td>
-            <td class="play_now"> 2 play! </td>
+            <td v-if="game.player2==''"> Join! </td>
+            <td v-else> {{ game.player2 }} </td>
+            <td class="play_now">  {{ game.countPlayers }} </td>
+            <td> <i class="material-icons delete" @click="deleteGame(game.id)">delete</i> </td>
           </tr>
           <tr>
              <td><NewGame/></td>
@@ -47,6 +49,21 @@ export default {
   components: {
     NewGame
   },
+  methods: {
+    deleteGame(id){
+      // delete doc from firestore
+      console.log(id)
+      db.collection('table_of_players').doc(id).delete()
+      .then(() => {
+        this.games = this.games.filter(game => {
+          return game.id != id
+        })
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+
+  },
   created(){
     // let user = firebase.auth().currentUser
     firebase.auth().onAuthStateChanged((user) => {
@@ -70,6 +87,7 @@ export default {
             id: doc.id,
             player1: doc.data().player1,
             player2: doc.data().player2,
+            countPlayers: doc.data().countPlayers,
             time: moment(doc.data().time).format('lll')
           })
         }
