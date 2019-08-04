@@ -4,7 +4,6 @@ import Home from '@/components/Home'
 import About from '@/components/About'
 import Guide from '@/components/Guide'
 import TableOfGames from '@/components/TableOfGames'
-import Register from '@/components/Register'
 import Chat from '@/components/Chat'
 import Signup from '@/components/auth/Signup'
 import Login from '@/components/auth/Login'
@@ -33,11 +32,6 @@ export default new Router({
       path: '/tableofgames',
       name: 'TableOfGames',
       component: TableOfGames
-    },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register
     },
     {
       path: '/chat',

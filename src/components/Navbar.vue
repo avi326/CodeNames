@@ -10,9 +10,9 @@
                         <b-nav-item :to="{ name: 'About'}"> About </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav class="ml-auto">
-                        <b-nav-item :to="{ name: 'Signup'}"> Signup </b-nav-item>
-                        <b-nav-item :to="{ name: 'Login'}"> Login </b-nav-item> 
-                        <b-nav-item @click="logout"> Logout </b-nav-item> 
+                        <b-nav-item v-if="!user" :to="{ name: 'Signup'}"> Signup </b-nav-item>
+                        <b-nav-item v-if="!user" :to="{ name: 'Login'}"> Login </b-nav-item> 
+                        <b-nav-item v-if="user" @click="logout"> Logout </b-nav-item> 
                    </b-navbar-nav>
                     <!-- <b-nav-item :to="{ name: 'About'}"> <span class="glyphicon glyphicon-log-in"></span> Login </b-nav-item>  -->
             </b-collapse>
@@ -29,6 +29,7 @@ export default {
     name: 'Navbar',
     data () {
         return {
+            user: null
 
         }
     },
@@ -41,7 +42,17 @@ export default {
             )
         }
 
-    }
+    },
+  created(){
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user){
+        this.user = user
+      } else {
+        this.user = null
+      }
+    })    
+  }
+    
 }
 </script>
 
