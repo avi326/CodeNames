@@ -35,15 +35,38 @@ export default {
       value: [
       ],
       options: [
-        { name: 'אדמה', code: '1' },
-        { name: 'גרגיר', code: '2' },
-        { name: 'יד', code: '3' },
-        { name: 'ארוחה', code: '4' },
-        { name: 'כדור', code: '5' },
-        { name: 'עציץ', code: '6' },
-        { name: 'דף', code: '7' }
+        // { name: 'אדמה', code: '1' },
+        // { name: 'גרגיר', code: '2' },
+        // { name: 'יד', code: '3' },
+        // { name: 'ארוחה', code: '4' },
+        // { name: 'כדור', code: '5' },
+        // { name: 'עציץ', code: '6' },
+        // { name: 'דף', code: '7' }
       ]
     }
+  },created () {
+
+    var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    var getDoc = cityRef
+    .get()
+    .then(doc => {
+        if (!doc.exists) {
+        console.log('No such document!');
+        } else {
+        console.log('Document data:', doc.data().blue_words_player_one);
+        var temp_options = doc.data().blue_words_player_one
+        var i = 0
+        temp_options.forEach( (element) => {
+           this.options.push({name: element, code: i++})
+        })
+        }
+        console.log(this.options)
+    })
+    .catch(err => {
+        console.log('Error getting document', err);
+    });
+
+
   },
   methods: {
     addTag (newTag) {

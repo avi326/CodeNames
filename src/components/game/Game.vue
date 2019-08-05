@@ -1,6 +1,7 @@
 <template>
     <div class="game">
-        <div style="text-align: center">
+        <div style="text-align: center; width: 65%; overflow: hidden;">
+            <div style="width: 600px; float: left;">
             <h3 class="lead text-center"> לוח מילים</h3>
             <table class="table table-bordered text-center words">
                 <tbody>
@@ -12,6 +13,11 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
+            <div style="margin-left: 50px;">
+            <GameChat :name="name"/>
+            </div>
+
         </div>
 
             <div class="mapTable">
@@ -29,28 +35,27 @@
                 <MultiSelectWords/>
             </div>
 
-            <div>
-            {{ table_board }}
-            </div>
-
         </div>
 </template>
 
 <script>
 import MultiSelectWords from '@/components/game/MultiSelectWords'
+import GameChat from '@/components/game/GameChat'
 import db from '@/firebase/init'
 
 export default {
 name: 'Game',
 data () {
     return {
+        name: "avi(test)",
         table_board: [],
         map_player_one: []
 
     }
 },
 components: {
-    MultiSelectWords
+    MultiSelectWords,
+    GameChat
 },
 created () {
 
@@ -108,23 +113,6 @@ created () {
 
 },
 methods: {
-    convert_from_num_to_color () {
-        var i;
-
-        for (i = 0; i < this.map_player_one.length; i++) {
-        if (this.map_player_one[i]=='0')
-        {
-            this.map_player_one[i] = "empty"
-        }
-        else if (map_player_one[i]=='1') {
-            this.map_player_one[i] = "blue"
-        }
-        else if (map_player_one[i]=='2') {
-            this.map_player_one[i] = "black"
-        }
-     } 
-
-    }
 
   }
 }
