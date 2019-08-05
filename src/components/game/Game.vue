@@ -4,40 +4,11 @@
             <h3 class="lead text-center"> לוח מילים</h3>
             <table class="table table-bordered text-center words">
                 <tbody>
-                    <tr>
-                        <th class="text-center">גבוה</th>
-                        <th class="text-center">נשיא</th>
-                        <th class="text-center">עולם</th>
-                        <th class="text-center">אדמה</th>
-                        <th class="text-center">תרנגול</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">פצצה</th>
-                        <th class="text-center">גרגיר</th>
-                        <th class="text-center">משחק</th>
-                        <th class="text-center">דשא</th>
-                        <th class="text-center">רמקול</th>
-                    </tr>            
-                    <tr>
-                        <th class="text-center">אש</th>
-                        <th class="text-center">ירושלים</th>
-                        <th class="text-center">יד</th>
-                        <th class="text-center">סרטן</th>
-                        <th class="text-center">כנף</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">תקרה</th>
-                        <th class="text-center">ארוחה</th>
-                        <th class="text-center">כוכב</th>
-                        <th class="text-center">חזק</th>
-                        <th class="text-center">איראן</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">עציץ</th>
-                        <th class="text-center">כדור</th>
-                        <th class="text-center">עט</th>
-                        <th class="text-center">חם</th>
-                        <th class="text-center">דף</th>
+
+                    <tr v-for="i in Math.ceil(table_board.length / 5)" :key="i">
+                        <td v-for="word in table_board.slice((i - 1) * 5, i * 5)" :key="word.id">
+                             {{ word }} 
+                             </td>
                     </tr>
                 </tbody>
             </table>
@@ -46,41 +17,12 @@
             <div class="mapTable">
                 <h3 class="lead text-center">מפת המשחק שלך</h3>
                 <table style="width:15%" class="table table-bordered mapTable">
-                    <tr>
-                        <td class="black"></td>
-                        <td ></td>
-                        <td class="black"></td>
-                        <td class="blue"> </td>
-                        <td> </td>
+                    <tr v-for="i in Math.ceil(map_player_one.length / 5)" :key="i">
+                        <td v-for="cell in map_player_one.slice((i - 1) * 5, i * 5)" :key="cell.id">
+                            {{ cell }} 
+                        </td>
                     </tr>
-                    <tr>
-                        <td ></td>
-                        <td class="blue" ></td>
-                        <td ></td>
-                        <td class="black"></td>
-                        <td ></td>
-                    </tr>
-                    <tr>
-                        <td ></td>
-                        <td ></td>
-                        <td class="blue" ></td>
-                        <td ></td>
-                        <td ></td>
-                    </tr>
-                    <tr>
-                        <td ></td>
-                        <td class="blue" ></td>
-                        <td ></td>
-                        <td class="black"></td>
-                        <td ></td>
-                    </tr>
-                    <tr>
-                        <td class="blue" ></td>
-                        <td class="blue" ></td>
-                        <td ></td>
-                        <td ></td>
-                        <td class="blue"></td>
-                    </tr>
+
                 </table>
             </div>
 
@@ -89,9 +31,7 @@
             </div>
 
             <div>
-            {{ word_list }}
-            {{ random_numbers_array }}
-            {{ table_word }}
+            {{ table_board }}
             </div>
 
         </div>
@@ -105,9 +45,9 @@ export default {
 name: 'Game',
 data () {
     return {
-        word_list: [],
-        random_numbers_array: [],
-        table_word: []
+        table_board: [],
+        map_player_one: []
+
     }
 },
 components: {
@@ -115,7 +55,7 @@ components: {
 },
 created () {
 
-var cityRef = db.collection('words').doc('test_group');
+var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
 var getDoc = cityRef
   .get()
   .then(doc => {
@@ -123,25 +63,42 @@ var getDoc = cityRef
       console.log('No such document!');
     } else {
       console.log('Document data:', doc.data());
-      this.word_list = doc.data().word_list
+      this.table_board = doc.data().table_board
+      this.map_player_one = doc.data().map_player_one
     }
   })
   .catch(err => {
     console.log('Error getting document', err);
   });
 
-     // get 25 random numbers
-    var i;
-    for (i = 0; i < 25; i++) {
-        this.random_numbers_array.push(Math.floor(Math.random() * 50) + 1)
-    } 
-    // add 25 random word to the table
-    var num;
-    for (num in this.random_numbers_array) {
-        this.table_word.push(this.word_list.num) 
-    }
-    console.log(this.word_list)
-    console.log(this.table_word)
+
+// var cityRef = db.collection('words').doc('test_group');
+// var getDoc = cityRef
+//   .get()
+//   .then(doc => {
+//     if (!doc.exists) {
+//       console.log('No such document!');
+//     } else {
+//       console.log('Document data:', doc.data());
+//       this.word_list = doc.data().word_list
+//     }
+//   })
+//   .catch(err => {
+//     console.log('Error getting document', err);
+//   });
+
+//      // get 25 random numbers
+//     var i;
+//     for (i = 0; i < 25; i++) {
+//         this.random_numbers_array.push(Math.floor(Math.random() * 50) + 1)
+//     } 
+//     // add 25 random word to the table
+//     var num;
+//     for (num in this.random_numbers_array) {
+//         this.table_word.push(this.word_list.num) 
+//     }
+//     console.log(this.word_list)
+//     console.log(this.table_word)
          
 
 
