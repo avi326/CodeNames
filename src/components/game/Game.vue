@@ -18,8 +18,7 @@
                 <h3 class="lead text-center">מפת המשחק שלך</h3>
                 <table style="width:15%" class="table table-bordered mapTable">
                     <tr v-for="i in Math.ceil(map_player_one.length / 5)" :key="i">
-                        <td v-for="cell in map_player_one.slice((i - 1) * 5, i * 5)" :key="cell.id">
-                            {{ cell }} 
+                    <td  v-for="cell in map_player_one.slice((i - 1) * 5, i * 5)" :key="cell.id" :class="cell">
                         </td>
                     </tr>
 
@@ -55,22 +54,23 @@ components: {
 },
 created () {
 
-var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
-var getDoc = cityRef
-  .get()
-  .then(doc => {
-    if (!doc.exists) {
-      console.log('No such document!');
-    } else {
-      console.log('Document data:', doc.data());
-      this.table_board = doc.data().table_board
-      this.map_player_one = doc.data().map_player_one
-    }
-  })
-  .catch(err => {
-    console.log('Error getting document', err);
-  });
+    var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    var getDoc = cityRef
+    .get()
+    .then(doc => {
+        if (!doc.exists) {
+        console.log('No such document!');
+        } else {
+        console.log('Document data:', doc.data());
+        this.table_board = doc.data().table_board
+        this.map_player_one = doc.data().map_player_one
+        }
+    })
+    .catch(err => {
+        console.log('Error getting document', err);
+    });
 
+// covert map
 
 // var cityRef = db.collection('words').doc('test_group');
 // var getDoc = cityRef
@@ -108,6 +108,23 @@ var getDoc = cityRef
 
 },
 methods: {
+    convert_from_num_to_color () {
+        var i;
+
+        for (i = 0; i < this.map_player_one.length; i++) {
+        if (this.map_player_one[i]=='0')
+        {
+            this.map_player_one[i] = "empty"
+        }
+        else if (map_player_one[i]=='1') {
+            this.map_player_one[i] = "blue"
+        }
+        else if (map_player_one[i]=='2') {
+            this.map_player_one[i] = "black"
+        }
+     } 
+
+    }
 
   }
 }
