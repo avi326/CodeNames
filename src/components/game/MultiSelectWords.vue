@@ -3,8 +3,7 @@
         <form class="card-panel" @submit.prevent="sendGroupOfWords">
         <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
          <div class="field">
-        <label for="email">בחירת מילים</label>
-        <label class="typo__label"> בחירת המילים</label>
+        <label class="typo__label"> בחר מרשימת המילים שלך</label>
         <multiselect v-model="value" tag-placeholder="הוסף מילה זו" placeholder="חפש או בחר מילה" label="name" track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
       </div>
       <div class="field">
@@ -31,6 +30,7 @@ export default {
   },
   data () {
     return {
+      feedback: null,
       defineWord: null,
       value: [
       ],

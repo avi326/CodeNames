@@ -88,18 +88,71 @@
                 <MultiSelectWords/>
             </div>
 
+            <div>
+            {{ word_list }}
+            {{ random_numbers_array }}
+            {{ table_word }}
+            </div>
+
         </div>
 </template>
 
 <script>
 import MultiSelectWords from '@/components/game/MultiSelectWords'
+import db from '@/firebase/init'
 
 export default {
 name: 'Game',
+data () {
+    return {
+        word_list: [],
+        random_numbers_array: [],
+        table_word: []
+    }
+},
 components: {
     MultiSelectWords
-}
+},
+created () {
 
+var cityRef = db.collection('words').doc('test_group');
+var getDoc = cityRef
+  .get()
+  .then(doc => {
+    if (!doc.exists) {
+      console.log('No such document!');
+    } else {
+      console.log('Document data:', doc.data());
+      this.word_list = doc.data().word_list
+    }
+  })
+  .catch(err => {
+    console.log('Error getting document', err);
+  });
+
+     // get 25 random numbers
+    var i;
+    for (i = 0; i < 25; i++) {
+        this.random_numbers_array.push(Math.floor(Math.random() * 50) + 1)
+    } 
+    // add 25 random word to the table
+    var num;
+    for (num in this.random_numbers_array) {
+        this.table_word.push(this.word_list.num) 
+    }
+    console.log(this.word_list)
+    console.log(this.table_word)
+         
+
+
+
+        
+}, mounted () {
+
+},
+methods: {
+
+  }
 }
 
 </script>
