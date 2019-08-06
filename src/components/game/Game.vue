@@ -85,15 +85,15 @@ created () {
 
     // update the player in firebase
        
-        // if (player_one_alias!=null) {
-        //     ref.update({
-        //         alias_player_one: this.player_one_alias
-        //     })
-        // } else if (player_two_alias!=null) {
-        //     ref.update({
-        //         alias_player_two: this.player_two_alias
-        //     })
-        // }
+        if (this.player_one_alias) {
+            ref.update({
+                alias_player_one: this.player_one_alias
+            })
+        } else if (this.player_two_alias) {
+            ref.update({
+                alias_player_two: this.player_two_alias
+            })
+        }
 
 
 
