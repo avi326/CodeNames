@@ -1,10 +1,9 @@
 <template>
     <div class="new-message">
     <form @submit.prevent="addGame">
-      <button class="btn deep-purple" :to="{ name: 'Game'}">add_game</button> 
-      <!-- , params: {player_one_alias: this.alias}  -->
-      <p v-if="feedback">{{ feedback }}</p>
+        <button class="btn deep-purple"> add_game</button>  
     </form>
+    <p v-if="newGame"> {{ newGame }} </p>
     </div>
 </template>
 
@@ -16,7 +15,6 @@ export default {
   data(){
     return{
       newGame: null,
-      feedback: null
     }
   },
   methods: {
@@ -30,7 +28,9 @@ export default {
             console.log(err)
         })
         this.newGame = null
-        this.feedback = null
+
+        // move to game after create col:
+        this.$router.push({ name: 'Game', params: {player_one_alias: this.alias}}) 
     }
   }
 }
