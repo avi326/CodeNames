@@ -2,8 +2,8 @@
     <div id="TableOfGames">
         <h1> Table Of Games </h1>
 
-        <p> hello  </p>
-        <p v-if="user"> {{ user.email }} </p>
+        <p v-if="alias">hello {{ alias }} </p>
+        <p v-else> hello guest, please <router-link :to="{ name: 'Signup'}"> signup here </router-link>  </p>
 
         <table>
         <thead>
@@ -23,12 +23,11 @@
             <td> <i class="material-icons delete" @click="deleteGame(game.id)">delete</i> </td>
           </tr>
           <tr>
-             <td><NewGame/></td>
+             <td><NewGame :alias="alias"/></td>
           </tr>
         </tbody>
       </table>
 
-        
     </div>
 </template>
 
@@ -42,8 +41,8 @@ export default {
     name: 'TableOfGames',
     data () {
         return {
-          user: null,
-          games: []
+          alias: null,
+          games: [],
         }
     },
   components: {
@@ -65,15 +64,22 @@ export default {
 
   },
   created(){
-    // let user = firebase.auth().currentUser
-    firebase.auth().onAuthStateChanged((user) => {
-      if(user){
-        this.user = user
-      } else {
-        this.user = null
+  let user = firebase.auth().currentUser;
+
+  if(user){
+      db.collection('users').where('user_id', '==', user.uid).get()
+        .then(snapshot => {
+          snapshot.forEach((doc) => {
+            console.log(doc.id)
+            this.alias = doc.id // doc id is the alias of user
+          })
+        }).then(() => {
+
+        })
+        } else {
+          this.user = "error: no user connected"
       }
-    })  
-    
+
     // show the table of players:
     let ref = db.collection('table_of_players').orderBy('time')
     
@@ -93,30 +99,6 @@ export default {
         }
       })
     })
-    
-// firebase.auth().onAuthStateChanged(function (user) {
-//     if (user) {
-//       window.alert(user.uid)
-//       console.log(db.collection('users').where('user_id','==',user.uid).get())
-//       db.collection('users').where('user_id','==',user.uid).get().then(
-//         snapshot => {
-//           snapshot.forEach((doc) => {
-//             console.log(this.user_name =   db.ref('/users/' + user.uid).once(alias))
-//             console.log(db.collection('users').get(user.uid))
-//             console.log(db.collection('users').doc(doc.id).get())
-//             this.user_name =   db.collection('users').doc(doc.id).get()
-//             window.alert(this.user_name)
-//           });
-
-//         }
-//       )
-
-//     } 
-// else{
-//   window.alert("No USER")
-// }
-// });
-
   }
 
 

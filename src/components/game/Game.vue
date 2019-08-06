@@ -45,6 +45,7 @@ import db from '@/firebase/init'
 
 export default {
 name: 'Game',
+props: ['player_one_alias','player_two_alias'],
 data () {
     return {
         name: "avi(test)",

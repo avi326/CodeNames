@@ -11,7 +11,7 @@
 import db from '@/firebase/init'
 export default {
   name: 'NewGame',
-  props: ['name'],
+  props: ['alias'],
   data(){
     return{
       newGame: null,
@@ -21,7 +21,7 @@ export default {
   methods: {
     addGame(){
         db.collection('table_of_players').add({
-            player1: "blabla",
+            player1: this.alias,
             player2: "",
             countPlayers: 1,
             time: Date.now()
