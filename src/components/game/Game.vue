@@ -1,5 +1,10 @@
 <template>
     <div class="game">
+
+        <div> 
+            <p> {{ player_two_alias }}  שחקן 2 </p>
+            <p> {{ player_one_alias }}  שחקן 1 </p>
+        </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
             <div style="width: 600px; float: left;">
             <h3 class="lead text-center"> לוח מילים</h3>
@@ -61,6 +66,7 @@ components: {
 created () {
 
     var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
     var getDoc = cityRef
     .get()
     .then(doc => {
