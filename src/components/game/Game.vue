@@ -2,8 +2,9 @@
     <div class="game">
 
         <div> 
-            <p> {{ player_two_alias }}  שחקן 2 </p>
             <p> {{ player_one_alias }}  שחקן 1 </p>
+            <p> נגד </p>
+            <p> {{ player_two_alias }}  שחקן 2 </p>
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
             <div style="width: 600px; float: left;">
@@ -20,7 +21,8 @@
             </table>
             </div>
             <div style="margin-left: 50px;">
-            <GameChat :name="name"/>
+             <GameChat v-if="player_two_alias!=null" :name="player_two_alias"/>
+             <GameChat v-else :name="player_one_alias"/>
             </div>
 
         </div>
@@ -28,8 +30,8 @@
             <div class="mapTable">
                 <h3 class="lead text-center">מפת המשחק שלך</h3>
                 <table style="width:15%" class="table table-bordered mapTable">
-                    <tr v-for="i in Math.ceil(map_player_one.length / 5)" :key="i">
-                    <td  v-for="cell in map_player_one.slice((i - 1) * 5, i * 5)" :key="cell.id" :class="cell">
+                    <tr v-for="i in Math.ceil(map_player.length / 5)" :key="i">
+                    <td  v-for="cell in map_player.slice((i - 1) * 5, i * 5)" :key="cell.id" :class="cell">
                         </td>
                     </tr>
 
@@ -50,12 +52,11 @@ import db from '@/firebase/init'
 
 export default {
 name: 'Game',
-props: ['player_one_alias','player_two_alias'],
+props: ['player_one_alias','player_two_alias'], 
 data () {
     return {
-        name: "avi(test)",
         table_board: [],
-        map_player_one: []
+        map_player: []
 
     }
 },
@@ -65,9 +66,9 @@ components: {
 },
 created () {
 
-    var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
     // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
-    var getDoc = cityRef
+    var getDoc = ref
     .get()
     .then(doc => {
         if (!doc.exists) {
@@ -75,43 +76,24 @@ created () {
         } else {
         console.log('Document data:', doc.data());
         this.table_board = doc.data().table_board
-        this.map_player_one = doc.data().map_player_one
+        this.map_player = doc.data().map_player_one
         }
     })
     .catch(err => {
         console.log('Error getting document', err);
     });
 
-// covert map
-
-// var cityRef = db.collection('words').doc('test_group');
-// var getDoc = cityRef
-//   .get()
-//   .then(doc => {
-//     if (!doc.exists) {
-//       console.log('No such document!');
-//     } else {
-//       console.log('Document data:', doc.data());
-//       this.word_list = doc.data().word_list
-//     }
-//   })
-//   .catch(err => {
-//     console.log('Error getting document', err);
-//   });
-
-//      // get 25 random numbers
-//     var i;
-//     for (i = 0; i < 25; i++) {
-//         this.random_numbers_array.push(Math.floor(Math.random() * 50) + 1)
-//     } 
-//     // add 25 random word to the table
-//     var num;
-//     for (num in this.random_numbers_array) {
-//         this.table_word.push(this.word_list.num) 
-//     }
-//     console.log(this.word_list)
-//     console.log(this.table_word)
-         
+    // update the player in firebase
+       
+        // if (player_one_alias!=null) {
+        //     ref.update({
+        //         alias_player_one: this.player_one_alias
+        //     })
+        // } else if (player_two_alias!=null) {
+        //     ref.update({
+        //         alias_player_two: this.player_two_alias
+        //     })
+        // }
 
 
 

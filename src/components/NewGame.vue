@@ -1,7 +1,8 @@
 <template>
     <div class="new-message">
     <form @submit.prevent="addGame">
-      <button class="btn deep-purple">add_game</button>
+      <button class="btn deep-purple" :to="{ name: 'Game'}">add_game</button> 
+      <!-- , params: {player_one_alias: this.alias}  -->
       <p v-if="feedback">{{ feedback }}</p>
     </form>
     </div>
