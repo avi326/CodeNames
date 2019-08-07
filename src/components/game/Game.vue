@@ -7,6 +7,10 @@
             <p> {{ player_two_alias }}  שחקן 2 </p>
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
+            <div style="width: 200px;  float: left;">
+            <GameMoves/>
+            </div>
+
             <div style="width: 600px; float: left;">
             <h3 class="lead text-center"> לוח מילים</h3>
             <table class="table table-bordered text-center words">
@@ -49,6 +53,7 @@
 <script>
 import MultiSelectWords from '@/components/game/MultiSelectWords'
 import GameChat from '@/components/game/GameChat'
+import GameMoves from '@/components/game/GameMoves'
 import db from '@/firebase/init'
 
 export default {
@@ -57,13 +62,15 @@ props: ['player_one_alias','player_two_alias'],
 data () {
     return {
         table_board: [],
-        map_player: []
+        map_player: [],
+        moves: []
 
     }
 },
 components: {
     MultiSelectWords,
-    GameChat
+    GameChat,
+    GameMoves
 },
 created () {
 
@@ -100,9 +107,6 @@ created () {
                 alias_player_two: this.player_two_alias
             })
         }
-
-
-
         
 }, mounted () {
 

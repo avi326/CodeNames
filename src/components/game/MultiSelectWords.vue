@@ -108,6 +108,9 @@ export default {
             },{ merge: true }).catch(err => {
             console.log(err)
             })
+
+            this.addDefineDataToFirebase()
+
             this.defineWord = null
             this.options = this.options // need to remove "value"
             this.value = null
@@ -115,7 +118,26 @@ export default {
         } else {
             this.feedback = 'אתה חייב להגדיר מילה'
         }
-      }
+      },
+    addDefineDataToFirebase () {
+            var num_of_moves =  db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').num_of_moves
+            console.log(num_of_moves)
+
+            var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves').doc(num_of_moves)
+            ref.set({
+                define: this.defineWord,
+                num_of_words: this.value.length,
+                words: this.value,
+                }).catch(err => {
+                console.log(err)
+                })
+                this.define = null
+                this.num_of_words = null
+                this.feedback = null
+    },
+    getNumOfMoves () {
+
+    }
   }
 }
 </script>
