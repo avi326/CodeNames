@@ -21,8 +21,8 @@
             </table>
             </div>
             <div style="margin-left: 50px;">
-             <GameChat v-if="player_two_alias!=null" :name="player_two_alias"/>
-             <GameChat v-else :name="player_one_alias"/>
+             <GameChat v-if="player_one_alias!=null" :name="player_one_alias"/>
+             <GameChat v-else :name="player_two_alias"/>
             </div>
 
         </div>
@@ -39,7 +39,8 @@
             </div>
 
             <div class="MultiSelectWords">
-                <MultiSelectWords/>
+                <MultiSelectWords v-if="player_one_alias!=null" :blue_words="'blue_words_player_one'"/>
+                <MultiSelectWords v-else :blue_words="'blue_words_player_two'"/>
             </div>
 
         </div>
@@ -74,10 +75,15 @@ created () {
         if (!doc.exists) {
         console.log('No such document!');
         } else {
-        console.log('Document data:', doc.data());
-        this.table_board = doc.data().table_board
-        this.map_player = doc.data().map_player_one
-        }
+            console.log('Document data:', doc.data());
+            this.table_board = doc.data().table_board
+
+            if (this.player_one_alias) {
+                this.map_player = doc.data().map_player_one
+            } else if (this.player_two_alias) {
+                this.map_player = doc.data().map_player_two
+            }
+        } 
     })
     .catch(err => {
         console.log('Error getting document', err);

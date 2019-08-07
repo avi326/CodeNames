@@ -22,9 +22,11 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import db from '@/firebase/init'
+import firebase from 'firebase'
 
 export default {
   name: 'MultiSelectWords',
+  props: ['blue_words'],
   components: {
     Multiselect
   },
@@ -32,17 +34,8 @@ export default {
     return {
       feedback: null,
       defineWord: null,
-      value: [
-      ],
-      options: [
-        // { name: 'אדמה', code: '1' },
-        // { name: 'גרגיר', code: '2' },
-        // { name: 'יד', code: '3' },
-        // { name: 'ארוחה', code: '4' },
-        // { name: 'כדור', code: '5' },
-        // { name: 'עציץ', code: '6' },
-        // { name: 'דף', code: '7' }
-      ]
+      value: [],
+      options: []
     }
   },created () {
 
@@ -50,11 +43,21 @@ export default {
     var getDoc = cityRef
     .get()
     .then(doc => {
+
+        var temp_options;
+
         if (!doc.exists) {
         console.log('No such document!');
         } else {
-        console.log('Document data:', doc.data().blue_words_player_one);
-        var temp_options = doc.data().blue_words_player_one
+            if (this.blue_words=='blue_words_player_one')
+            {
+                temp_options = doc.data().blue_words_player_one
+            } else if (this.blue_words=='blue_words_player_two'){
+                temp_options = doc.data().blue_words_player_two
+            }
+
+        console.log(temp_options);
+
         var i = 0
         temp_options.forEach( (element) => {
            this.options.push({name: element, code: i++})
@@ -68,6 +71,27 @@ export default {
 
 
   },
+
+  
+        //  var ref = firebase.database().ref("games/UwaFbzVh4MPyhzLbDNrx").child('blue_words_player_one');
+        // ref.on("value", function(snapshot) { 
+        // let emails=snapshot.val();
+        // console.log(ref);
+        //     console.log(emails);
+        // });
+
+
+        // var check_ref = firebase.database().ref('games/UwaFbzVh4MPyhzLbDNrx/').once('value').then(function(snapshot) { // blue_words_player_two
+        // let data_ref = snapshot;
+        // console.log(data_ref);
+        // });
+
+//         var check_ref = firebase.database().ref('games/UwaFbzVh4MPyhzLbDNrx/blue_words_player_two');
+//         var data_ref = check_ref.then(function(snapshot) {
+//     var data = snapshot.val(); // data === "hello"
+//   });
+       // console.log(data_ref);
+
   methods: {
     addTag (newTag) {
       const tag = {
