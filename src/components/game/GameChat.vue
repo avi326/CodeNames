@@ -56,7 +56,14 @@ export default {
 
 <style scoped>
 span.name {
+color: rgb(138, 131, 42);
 font-size: 20px
+}
+
+span.content {
+font-size: 15px;
+color: rgb(76, 77, 24);
+font-style: inherit
 }
 
 span.time {
