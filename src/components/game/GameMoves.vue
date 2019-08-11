@@ -1,5 +1,10 @@
 <template>
     <div class="game_moves">
+    <div v-if="turn">
+      <b-card>
+      </b-card>
+    </div>
+    <div v-else>
         <h3> מהלכים </h3>
             <b-card>
                 <ul class="messages" v-chat-scroll> <!-- print all message -->
@@ -9,6 +14,7 @@
                 </li>
                 </ul>
             </b-card>
+    </div>
             
     </div>
 
@@ -20,7 +26,7 @@ import moment from 'moment'
 
 export default {
   name: 'GameMoves',
-  props: ['name'],
+  props: ['turn'],
   components: {
     
   },

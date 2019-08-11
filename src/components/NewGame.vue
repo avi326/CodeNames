@@ -30,9 +30,11 @@ export default {
         this.newGame = null
 
         // move to game after create col:
-        this.$router.push({ name: 'Game', params: {player_one_alias: this.alias}}) 
+        this.$router.push({ name: 'Game', params: {player_one_alias: this.alias, turn: this.alias}}) 
     }
   }
+
+  // לוח חדש, 
 }
 </script>
 

@@ -5,10 +5,12 @@
             <p> {{ player_one_alias }}  שחקן 1 </p>
             <p> נגד </p>
             <p> {{ player_two_alias }}  שחקן 2 </p>
+
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
             <div style="width: 200px;  float: left;">
-            <GameMoves/>
+             <GameMoves v-if="turn" :turn="turn"/>
+             <GameMoves v-else/>
             </div>
 
             <div style="width: 600px; float: left;">
@@ -58,13 +60,12 @@ import db from '@/firebase/init'
 
 export default {
 name: 'Game',
-props: ['player_one_alias','player_two_alias'], 
+props: ['player_one_alias','player_two_alias','turn'], 
 data () {
     return {
         table_board: [],
         map_player: [],
         moves: []
-
     }
 },
 components: {
@@ -90,6 +91,17 @@ created () {
             } else if (this.player_two_alias) {
                 this.map_player = doc.data().map_player_two
             }
+
+            // we init turn to player 1
+            if (this.turn==this.player_one_alias) {
+                ref.update({
+                   turn: doc.data().alias_player_one
+                })
+            } else {
+                ref.update({
+                   turn: doc.data().alias_player_two
+                })
+            }
         } 
     })
     .catch(err => {
@@ -112,6 +124,22 @@ created () {
 
 },
 methods: {
+
+    play_the_turn () {
+    var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
+    var getDoc = ref
+    .get()
+    .then(doc => {
+        if (!doc.exists) {
+        console.log('No such document!');
+        } else {
+           
+            this.table_board = doc.data().table_board
+
+        } 
+    })
+    }
 
   }
 }
