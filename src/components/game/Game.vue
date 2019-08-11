@@ -8,7 +8,7 @@
 
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
-            <div style="width: 200px;  float: left;">
+            <div style="width: 400px;  float: left;">
              <GameMoves v-if="turn" :turn="turn"/>
              <GameMoves v-else/>
             </div>
@@ -43,17 +43,10 @@
 
                 </table>
             </div>
-
-            <div class="MultiSelectWords">
-                <MultiSelectWords v-if="player_one_alias!=null" :blue_words="'blue_words_player_one'"/>
-                <MultiSelectWords v-else :blue_words="'blue_words_player_two'"/>
-            </div>
-
         </div>
 </template>
 
 <script>
-import MultiSelectWords from '@/components/game/MultiSelectWords'
 import GameChat from '@/components/game/GameChat'
 import GameMoves from '@/components/game/GameMoves'
 import db from '@/firebase/init'
@@ -69,7 +62,6 @@ data () {
     }
 },
 components: {
-    MultiSelectWords,
     GameChat,
     GameMoves
 },
