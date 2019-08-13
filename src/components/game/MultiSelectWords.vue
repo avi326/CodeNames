@@ -95,7 +95,7 @@ export default {
             console.log(err)
             })
 
-            this.addDefineDataToFirebase()
+            this.increaseMove()
 
             this.defineWord = null
             this.options = this.options // need to remove "value"
@@ -138,7 +138,21 @@ export default {
         });
 
     },
-    increaseMoveByOne () {
+    increaseMove () {
+
+                var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves')
+            ref.add({
+                define: this.defineWord,
+                num_of_words: this.value.length,
+                words: this.value,
+                }).catch(err => {
+                console.log(err)
+                })
+                this.define = null
+                this.num_of_words = null
+                this.feedback = null
+
+
 
     }
 

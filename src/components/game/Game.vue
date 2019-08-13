@@ -5,6 +5,11 @@
             <p> {{ player_one_alias }}  שחקן 1 </p>
             <p> נגד </p>
             <p> {{ player_two_alias }}  שחקן 2 </p>
+        <div>
+            {{ number_check }}
+
+
+        </div>
 
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
@@ -58,7 +63,8 @@ data () {
     return {
         table_board: [],
         map_player: [],
-        moves: []
+        moves: [],
+        number_check: []
     }
 },
 components: {
@@ -111,7 +117,6 @@ created () {
                 alias_player_two: this.player_two_alias
             })
         }
-        
 }, mounted () {
 
 },
@@ -131,7 +136,7 @@ methods: {
 
         } 
     })
-    }
+    },
 
   }
 }
