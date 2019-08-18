@@ -19,6 +19,7 @@ export default {
     }
   },
   methods: {
+<<<<<<< HEAD
     addGame()
     {
       if(this.alias == null)
@@ -174,8 +175,25 @@ export default {
           this.$router.push({ name: 'Game', params: {player_one_alias: this.alias}}) 
         }
       })
+=======
+    addGame(){
+        db.collection('table_of_players').add({
+            player1: this.alias,
+            player2: "",
+            countPlayers: 1,
+            time: Date.now()
+        }).catch(err => {
+            console.log(err)
+        })
+        this.newGame = null
+
+        // move to game after create col:
+        this.$router.push({ name: 'Game', params: {player_one_alias: this.alias, turn: this.alias}}) 
+>>>>>>> 6d0dbfc3442662babddd371520690ee7b980ba40
     }
   }
+
+  // לוח חדש, 
 }
 </script>
 

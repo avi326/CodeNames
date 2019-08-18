@@ -1,5 +1,14 @@
 <template>
     <div class="game_moves">
+    <div v-if="turn">
+      <b-card>
+            <div class="MultiSelectWords">
+                <MultiSelectWords v-if="turn!=null" :blue_words="'blue_words_player_one'"/>
+                <MultiSelectWords v-else :blue_words="'blue_words_player_two'"/>
+            </div>
+      </b-card>
+    </div>
+    <div v-else>
         <h3> מהלכים </h3>
             <b-card>
                 <ul class="messages" v-chat-scroll> <!-- print all message -->
@@ -9,20 +18,22 @@
                 </li>
                 </ul>
             </b-card>
+    </div>
             
     </div>
 
 </template>
 
 <script>
+import MultiSelectWords from '@/components/game/MultiSelectWords'
 import db from '@/firebase/init'
 import moment from 'moment'
 
 export default {
   name: 'GameMoves',
-  props: ['name'],
+  props: ['turn'],
   components: {
-    
+    MultiSelectWords
   },
   data(){
     return{

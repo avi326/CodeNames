@@ -5,10 +5,17 @@
             <p> {{ player_one_alias }}  שחקן 1 </p>
             <p> נגד </p>
             <p> {{ player_two_alias }}  שחקן 2 </p>
+        <div>
+            {{ number_check }}
+
+
+        </div>
+
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
-            <div style="width: 200px;  float: left;">
-            <GameMoves/>
+            <div style="width: 400px;  float: left;">
+             <GameMoves v-if="turn" :turn="turn"/>
+             <GameMoves v-else/>
             </div>
 
             <div style="width: 600px; float: left;">
@@ -41,34 +48,26 @@
 
                 </table>
             </div>
-
-            <div class="MultiSelectWords">
-                <MultiSelectWords v-if="player_one_alias!=null" :blue_words="'blue_words_player_one'"/>
-                <MultiSelectWords v-else :blue_words="'blue_words_player_two'"/>
-            </div>
-
         </div>
 </template>
 
 <script>
-import MultiSelectWords from '@/components/game/MultiSelectWords'
 import GameChat from '@/components/game/GameChat'
 import GameMoves from '@/components/game/GameMoves'
 import db from '@/firebase/init'
 
 export default {
 name: 'Game',
-props: ['player_one_alias','player_two_alias'], 
+props: ['player_one_alias','player_two_alias','turn'], 
 data () {
     return {
         table_board: [],
         map_player: [],
-        moves: []
-
+        moves: [],
+        number_check: []
     }
 },
 components: {
-    MultiSelectWords,
     GameChat,
     GameMoves
 },
@@ -104,6 +103,17 @@ created () {
             {
                 this.map_player = doc.data().map_player_one
             }
+
+            // we init turn to player 1
+            if (this.turn==this.player_one_alias) {
+                ref.update({
+                   turn: doc.data().alias_player_one
+                })
+            } else {
+                ref.update({
+                   turn: doc.data().alias_player_two
+                })
+            }
         } 
     })
     .catch(err => {
@@ -121,11 +131,26 @@ created () {
                 alias_player_one: this.player_one_alias
             })
         }
-        
 }, mounted () {
 
 },
 methods: {
+
+    play_the_turn () {
+    var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
+    var getDoc = ref
+    .get()
+    .then(doc => {
+        if (!doc.exists) {
+        console.log('No such document!');
+        } else {
+           
+            this.table_board = doc.data().table_board
+
+        } 
+    })
+    },
 
   }
 }

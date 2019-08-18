@@ -11,6 +11,9 @@
         <input id="name" type="text" v-model="defineWord">
         <p v-if="feedback" class="center">{{ feedback }}</p>
       </div>
+      <div>
+          {{ num_of_moves}}
+      </div>
       <div class="field center">
         <button class="btn  light-blue lighten-2">שחק! </button>
         
@@ -35,7 +38,8 @@ export default {
       feedback: null,
       defineWord: null,
       value: [],
-      options: []
+      options: [],
+      num_of_moves: null
     }
   },created () {
 
@@ -69,28 +73,10 @@ export default {
         console.log('Error getting document', err);
     });
 
+    this.getNumOfMoves()
+
 
   },
-
-  
-        //  var ref = firebase.database().ref("games/UwaFbzVh4MPyhzLbDNrx").child('blue_words_player_one');
-        // ref.on("value", function(snapshot) { 
-        // let emails=snapshot.val();
-        // console.log(ref);
-        //     console.log(emails);
-        // });
-
-
-        // var check_ref = firebase.database().ref('games/UwaFbzVh4MPyhzLbDNrx/').once('value').then(function(snapshot) { // blue_words_player_two
-        // let data_ref = snapshot;
-        // console.log(data_ref);
-        // });
-
-//         var check_ref = firebase.database().ref('games/UwaFbzVh4MPyhzLbDNrx/blue_words_player_two');
-//         var data_ref = check_ref.then(function(snapshot) {
-//     var data = snapshot.val(); // data === "hello"
-//   });
-       // console.log(data_ref);
 
   methods: {
     addTag (newTag) {
@@ -109,7 +95,7 @@ export default {
             console.log(err)
             })
 
-            this.addDefineDataToFirebase()
+            this.increaseMove()
 
             this.defineWord = null
             this.options = this.options // need to remove "value"
@@ -120,10 +106,11 @@ export default {
         }
       },
     addDefineDataToFirebase () {
-            var num_of_moves =  db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').num_of_moves
-            console.log(num_of_moves)
 
-            var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves').doc(num_of_moves)
+        
+          //  this.getNumOfMoves()
+
+            var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves').doc('1')
             ref.set({
                 define: this.defineWord,
                 num_of_words: this.value.length,
@@ -136,8 +123,44 @@ export default {
                 this.feedback = null
     },
     getNumOfMoves () {
+        var ref =  db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx')
+        ref.get().then(function(documentSnapshot) {
+            if (documentSnapshot.exists) {
+                var data = documentSnapshot.data().num_of_moves;
+                console.log(data)
+                return data;
+            } else {
+                console.log('document not found');
+            }
+
+            
+
+        });
+
+    },
+    increaseMove () {
+
+                var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves')
+            ref.add({
+                define: this.defineWord,
+                num_of_words: this.value.length,
+                words: this.value,
+                }).catch(err => {
+                console.log(err)
+                })
+                this.define = null
+                this.num_of_words = null
+                this.feedback = null
+
+
 
     }
+
+  },
+  mounted() {
+
+      
+
   }
 }
 </script>
