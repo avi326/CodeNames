@@ -33,6 +33,7 @@ export default {
     }
   },
   created(){
+    //TODO: Get the right chat from the specific game. First need to create the collection (look at other TODO)
     let ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('chat').orderBy('timestamp')
     
     // subscribe to changes to the 'messages' collection
