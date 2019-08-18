@@ -3,9 +3,9 @@
         <h1> Table Of Games </h1>
 
         <p v-if="alias">hello {{ alias }} </p>
-        <p v-else> hello guest, please <router-link :to="{ name: 'Signup'}"> signup here </router-link>  </p>
+        <p v-else> hello guest, please <router-link :to="{ name: 'Signup'}"> signup here </router-link> or <router-link :to="{ name: 'Login'}"> login <i class="fa fa-header" aria-hidden="true"></i> </router-link>  </p>
 
-        <table>
+      <table v-if="alias">
         <thead>
           <tr>
               <th>Name1</th>
