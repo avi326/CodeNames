@@ -58,6 +58,8 @@ export default {
                 temp_options = doc.data().blue_words_player_one
             } else if (this.blue_words=='blue_words_player_two'){
                 temp_options = doc.data().blue_words_player_two
+            } else if (this.blue_words=='table_board') {
+              temp_options = doc.data().table_board // for guess 
             }
 
         console.log(temp_options);

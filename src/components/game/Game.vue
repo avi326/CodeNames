@@ -14,7 +14,7 @@
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
             <div style="width: 400px;  float: left;">
-             <GameMoves v-if="turn" :turn="turn"/>
+             <GameMoves v-if="turn" :startTurn="turn"/>
              <GameMoves v-else/>
             </div>
 
