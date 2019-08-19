@@ -22,6 +22,7 @@ export default {
   methods: {
     addMessage(){
       if(this.newMessage){
+        //TODO: Get the right chat from the specific game. First need to create the collection (look at other TODO)
        db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('chat').add({
           content: this.newMessage,
           name: this.name,

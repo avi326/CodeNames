@@ -73,7 +73,8 @@ components: {
 },
 created () {
 
-    var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    //get the game as to the initiator (this first player)
+    var ref = db.collection('games').doc(this.player_one_alias); 
     // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
     var getDoc = ref
     .get()
@@ -84,10 +85,23 @@ created () {
             console.log('Document data:', doc.data());
             this.table_board = doc.data().table_board
 
-            if (this.player_one_alias) {
-                this.map_player = doc.data().map_player_one
-            } else if (this.player_two_alias) {
+            //First check if it's player two becuase player one most to be in this level
+            if (this.player_two_alias)
+            {
                 this.map_player = doc.data().map_player_two
+                
+                //TODO: Need to get the currect doc and update it
+                db.collection('table_of_players').set({                    
+                    player2: this.player_two_alias,
+                    countPlayers: 2,
+                    time: Date.now()
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+            else if (this.player_one_alias)
+            {
+                this.map_player = doc.data().map_player_one
             }
 
             // we init turn to player 1
@@ -107,14 +121,14 @@ created () {
     });
 
     // update the player in firebase
-       
-        if (this.player_one_alias) {
-            ref.update({
-                alias_player_one: this.player_one_alias
-            })
-        } else if (this.player_two_alias) {
+       if (this.player_two_alias) {
             ref.update({
                 alias_player_two: this.player_two_alias
+            })
+        }
+        else if (this.player_one_alias) {
+            ref.update({
+                alias_player_one: this.player_one_alias
             })
         }
 }, mounted () {
