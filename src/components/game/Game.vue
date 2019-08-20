@@ -95,11 +95,12 @@ created () {
                 this.map_player = doc.data().map_player_two
                 
                 //TODO: Need to get the currect doc and update it
-                db.collection('table_of_players').set({                    
+                db.collection('table_of_players').doc(this.player_one_alias).set({                    
                     player2: this.player_two_alias,
                     countPlayers: 2,
                     time: Date.now()
-                }).catch(err => {
+                }, {merge: true}
+                ).catch(err => {
                     console.log(err)
                 })
             }

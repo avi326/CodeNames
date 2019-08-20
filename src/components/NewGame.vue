@@ -36,7 +36,7 @@ export default {
           window.alert("This player already have a live game")
         }        
         else{
-          db.collection('table_of_players').add({
+          db.collection('table_of_players').doc(this.alias).set({
               player1: this.alias,
               player2: "",
               countPlayers: 1,

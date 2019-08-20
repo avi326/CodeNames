@@ -105,7 +105,6 @@ export default {
     check_if_first_move () {
       
     var ref = this.ref_db.collection('moves');
-    // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
     var getDoc = ref
     .get()
     .then(doc => {
