@@ -171,7 +171,7 @@ export default {
           })
 
           // move to game after create row:
-          this.$router.push({ name: 'Game', params: {player_one_alias: this.alias}}) 
+          this.$router.push({ name: 'Game', params: {player_one_alias: this.alias, turn:this.alias}}) 
         }
       })
     }

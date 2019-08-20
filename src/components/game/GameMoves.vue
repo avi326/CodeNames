@@ -1,7 +1,9 @@
 <template>
     <div class="game_moves">
+
     <div v-if="turn">
       <b-card>
+         
       <div v-if="need_to_fix">
         <p>  תקן את הניחוש הקודם שלך</p>
       </div>
