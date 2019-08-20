@@ -77,7 +77,7 @@ export default {
         console.log('Error getting document', err);
     });
 
-    this.getNumOfMoves()
+    // this.getNumOfMoves()
 
 
   },
@@ -127,22 +127,23 @@ export default {
                 this.num_of_words = null
                 this.feedback = null
     },
-    getNumOfMoves () {
-        var ref =  db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx')
-        ref.get().then(function(documentSnapshot) {
-            if (documentSnapshot.exists) {
-                var data = documentSnapshot.data().num_of_moves;
-                console.log(data)
-                return data;
-            } else {
-                console.log('document not found');
-            }
+    // getNumOfMoves () {
+    //     var ref =  db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx')
+    //     ref.get().then(function(documentSnapshot) {
+    //         if (documentSnapshot.exists) {
+    //             var data = documentSnapshot.data().num_of_moves;
+    //             console.log(data)
+    //             return data;
+    //         } else {
+    //             console.log('document not found');
+    //         }
 
             
 
-        });
+    //     });
 
-    },
+    // },
+
     // increaseMove () {
 
     //             var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves')

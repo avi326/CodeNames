@@ -7,8 +7,10 @@
       <div v-if="need_to_fix">
         <p>  תקן את הניחוש הקודם שלך</p>
       </div>
-      <div v-if="need_to_guess">
+      <!--  v-if="need_to_guess" -->
+      <div> 
         <p> נחש את ההגדרה הנוכחית</p>
+        <GuessDefine :ref_db="ref_db"/>
       </div>
       <div id="define">
         <p> אתגר את השחקן השני! </p>
@@ -35,6 +37,7 @@
 
 <script>
 import MultiSelectWords from '@/components/game/MultiSelectWords'
+import GuessDefine from '@/components/game/GuessDefine'
 import db from '@/firebase/init'
 import moment from 'moment'
 
@@ -44,7 +47,8 @@ export default {
           ref_db: Object
         },
   components: {
-    MultiSelectWords
+    MultiSelectWords,
+    GuessDefine
   },
   data(){
     return{
@@ -52,7 +56,8 @@ export default {
       turn: null,
       need_to_fix: null,
       need_to_guess: null,
-      define_word: null
+      define_word: null,
+      rivel_words_arr: null
     }
   },created () {
     this.turn = this.startTurn
@@ -117,7 +122,20 @@ export default {
 
         } 
     })
-    }
+    },
+
+    getMove () {
+    var ref = this.ref_db.collection('moves')
+    ref.onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        console.log(change)
+        if(change.type == 'added'){
+          let doc = change.doc
+          this.rivel_words_arr = doc.data().words
+        }
+      })
+    })
+},
   }
 }
 </script>
