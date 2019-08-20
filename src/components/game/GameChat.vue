@@ -9,7 +9,7 @@
                     <span class="time">{{ message.timestamp }}</span>
                 </li>
                 </ul>
-                 <GameChatNewMessage :name="name"/>
+                 <GameChatNewMessage :name="name" :ref_db="ref_db"/>
             </b-card>
             
     </div>
@@ -23,7 +23,9 @@ import moment from 'moment'
 
 export default {
   name: 'GameChat',
-  props: ['name'],
+  props: {name: String,
+          ref_db: Object
+  },
   components: {
     GameChatNewMessage
   },
@@ -34,7 +36,7 @@ export default {
   },
   created(){
     //TODO: Get the right chat from the specific game. First need to create the collection (look at other TODO)
-    let ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('chat').orderBy('timestamp')
+    var ref = this.ref_db.collection('chat').orderBy('timestamp')
     
     // subscribe to changes to the 'messages' collection
     ref.onSnapshot(snapshot => {

@@ -12,8 +12,8 @@
       </div>
       <div id="define">
         <p> אתגר את השחקן השני! </p>
-        <MultiSelectWords v-if="startTurn!=null" :blue_words="'blue_words_player_one'"/>
-        <MultiSelectWords v-else :blue_words="'blue_words_player_two'"/>
+        <MultiSelectWords v-if="startTurn!=null" :blue_words="'blue_words_player_one'" :setAppGetData="setAppGetData"  :ref_db="ref_db"/>
+        <MultiSelectWords v-else :blue_words="'blue_words_player_two'" :setAppGetData="setAppGetData"  :ref_db="ref_db"/>
       </div>
       </b-card>
     </div>
@@ -40,7 +40,9 @@ import moment from 'moment'
 
 export default {
   name: 'GameMoves',
-  props: ['startTurn'],
+  props:{ startTurn: String,
+          ref_db: Object
+        },
   components: {
     MultiSelectWords
   },
@@ -49,7 +51,8 @@ export default {
       moves: [],
       turn: null,
       need_to_fix: null,
-      need_to_guess: null
+      need_to_guess: null,
+      define_word: null
     }
   },created () {
     this.turn = this.startTurn
@@ -57,7 +60,7 @@ export default {
   mounted(){
     // the control in moves 
     //TODO: Get the right moves from the specific game. First need to create the collection (look at other TODO)
-    let ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves')
+    var ref = this.ref_db.collection('moves');
     
     // subscribe to changes to the 'messages' collection
     ref.onSnapshot(snapshot => {
@@ -69,34 +72,49 @@ export default {
             define: doc.data().define,
             num_of_words: doc.data().num_of_words,
           })
+            if (!this.check_if_first_move) {
 
-          this.replaceTurn();
+            }
+            else {
+                this.replaceTurn();
+            }
+            
 
         }
       })
     })
   },
   methods: {
+        setAppGetData (data) {
+          this.define_word = data
+        },
+
         replaceTurn () {
-      if (this.turn) {
-        this.turn = null 
-      } else {
-        this.turn = true
-      }
+
+          console.log("replace turn")
+
+          if (this.turn ) {
+            this.turn = null 
+          } else {
+            this.turn = true
+          }
     },
     play_the_turn() {
 
     },
     check_if_first_move () {
       
-    var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    var ref = this.ref_db.collection('moves');
     // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
     var getDoc = ref
     .get()
     .then(doc => {
         if (!doc.exists) {
-        console.log('No such document!');
+          console.log('No such document!');
+          return true;
+
         } else {
+          return false;
 
         } 
     })

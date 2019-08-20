@@ -14,8 +14,8 @@
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
             <div style="width: 400px;  float: left;">
-             <GameMoves v-if="turn" :startTurn="turn"/>
-             <GameMoves v-else/>
+             <GameMoves v-if="turn" :startTurn="turn" :ref_db="ref"/>
+             <GameMoves v-else :ref_db="ref"/>
             </div>
 
             <div style="width: 600px; float: left;">
@@ -32,8 +32,8 @@
             </table>
             </div>
             <div style="margin-left: 50px;">
-             <GameChat v-if="player_one_alias!=null" :name="player_one_alias"/>
-             <GameChat v-else :name="player_two_alias"/>
+             <GameChat v-if="player_one_alias!=null" :name="player_one_alias" :ref_db="ref"/>
+             <GameChat v-else :name="player_two_alias" :ref_db="ref"/>
             </div>
 
         </div>
@@ -64,7 +64,8 @@ data () {
         table_board: [],
         map_player: [],
         moves: [],
-        number_check: []
+        number_check: [],
+        ref: null
     }
 },
 components: {
@@ -74,9 +75,12 @@ components: {
 created () {
 
     //get the game as to the initiator (this first player)
-    var ref = db.collection('games').doc(this.player_one_alias); 
+    this.ref = db.collection('games').doc(this.player_one_alias); 
+    console.log(typeof this.ref);
+    this.init_firebase_game ()
+
     // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
-    var getDoc = ref
+    var getDoc = this.ref
     .get()
     .then(doc => {
         if (!doc.exists) {
@@ -106,11 +110,11 @@ created () {
 
             // we init turn to player 1
             if (this.turn==this.player_one_alias) {
-                ref.update({
+                this.ref.update({
                    turn: doc.data().alias_player_one
                 })
             } else {
-                ref.update({
+                this.ref.update({
                    turn: doc.data().alias_player_two
                 })
             }
@@ -122,12 +126,12 @@ created () {
 
     // update the player in firebase
        if (this.player_two_alias) {
-            ref.update({
+            this.ref.update({
                 alias_player_two: this.player_two_alias
             })
         }
         else if (this.player_one_alias) {
-            ref.update({
+            this.ref.update({
                 alias_player_one: this.player_one_alias
             })
         }
@@ -135,9 +139,13 @@ created () {
 
 },
 methods: {
+    init_firebase_game () {
+        db.collection('games').doc(this.player_one_alias).collection('moves')
+        db.collection('games').doc(this.player_one_alias).collection('chat')
+    },
 
     play_the_turn () {
-    var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
+    var ref = this.ref;
     // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
     var getDoc = ref
     .get()

@@ -12,7 +12,10 @@
 import db from '@/firebase/init'
 export default {
   name: 'GameChatNewMessage',
-  props: ['name'],
+  props: {
+    name: String,
+    ref_db: Object
+  },
   data(){
     return{
       newMessage: null,
@@ -23,7 +26,7 @@ export default {
     addMessage(){
       if(this.newMessage){
         //TODO: Get the right chat from the specific game. First need to create the collection (look at other TODO)
-       db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('chat').add({
+       this.ref_db.collection('chat').add({
           content: this.newMessage,
           name: this.name,
           timestamp: Date.now()

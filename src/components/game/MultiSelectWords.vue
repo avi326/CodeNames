@@ -29,7 +29,10 @@ import firebase from 'firebase'
 
 export default {
   name: 'MultiSelectWords',
-  props: ['blue_words'],
+  props: { blue_words: String,
+          ref_db: Object,
+          setAppGetData: {type: Function}
+          } ,
   components: {
     Multiselect
   },
@@ -43,9 +46,8 @@ export default {
     }
   },created () {
 
-    var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx');
-    var getDoc = cityRef
-    .get()
+    var getDoc = this.ref_db;
+    getDoc.get()
     .then(doc => {
 
         var temp_options;
@@ -97,8 +99,9 @@ export default {
             console.log(err)
             })
 
-            this.increaseMove()
+            this.addDefineDataToFirebase()
 
+            this.setAppGetData('True')
             this.defineWord = null
             this.options = this.options // need to remove "value"
             this.value = null
@@ -112,8 +115,8 @@ export default {
         
           //  this.getNumOfMoves()
 
-            var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves').doc('1')
-            ref.set({
+            var ref = this.ref_db.collection('moves')
+            ref.add({
                 define: this.defineWord,
                 num_of_words: this.value.length,
                 words: this.value,
@@ -140,23 +143,23 @@ export default {
         });
 
     },
-    increaseMove () {
+    // increaseMove () {
 
-                var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves')
-            ref.add({
-                define: this.defineWord,
-                num_of_words: this.value.length,
-                words: this.value,
-                }).catch(err => {
-                console.log(err)
-                })
-                this.define = null
-                this.num_of_words = null
-                this.feedback = null
+    //             var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves')
+    //         ref.add({
+    //             define: this.defineWord,
+    //             num_of_words: this.value.length,
+    //             words: this.value,
+    //             }).catch(err => {
+    //             console.log(err)
+    //             })
+    //             this.define = null
+    //             this.num_of_words = null
+    //             this.feedback = null
 
 
 
-    }
+    // }
 
   },
   mounted() {
