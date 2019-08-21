@@ -33,8 +33,8 @@ export default {
     return {
       value: null,
       options: [],
-      words_arr: null,
-      rival_define: null
+      rival_define: null,
+      words_to_guess: null
 
     }
   },created () {
@@ -76,13 +76,15 @@ export default {
         console.log(change)
         if(change.type == 'added'){
           let doc = change.doc
-            if (this.check_if_first_move) {
+            if (this.check_if_first_move()) {
               console.log("first move")
 
             }
             else {
                 this.rival_define = doc.data().define
                 console.log("define from firebase: ",  this.rival_define)
+                // this.words_to_guess = this.get_words_to_guess()
+                console.log("words_to_guess from firebase: ",  this.words_to_guess)
             }
 
         }
@@ -96,7 +98,8 @@ export default {
             this.value = value
             console.log("value: ",  this.value)
           },
-          sendGuess(){
+          get_words_to_guess () {
+
             console.log("value(in sendguess): ",  this.value)
             var ref = this.ref_db.collection('moves') 
 
@@ -107,14 +110,22 @@ export default {
                 .then(querySnapshot => {
                           querySnapshot.forEach(function(doc) {
                           // doc.data() is never undefined for query doc snapshots
-                          var list_of_word = doc.data().words
                           console.log(doc.id, " => ", doc.data().words); 
+                          var arr_words = doc.data().words
+                          console.log("arr words: ", arr_words); 
+                          words_to_guess = arr_words
+                          console.log("words_to_guess: ", words_to_guess); 
+                          return arr_words
                           });
                 })
 
                 .catch(error => {
                     console.log("erorr guess"); 
                 });
+
+          },
+          sendGuess(){
+
 
             },
                 check_if_first_move () {
@@ -127,7 +138,6 @@ export default {
                       return false;
 
                     } else {
-                      console.log('No such document!');
                       return true;
 
                     } 

@@ -93,13 +93,20 @@ export default {
     },
     sendGroupOfWords(){
       if(this.defineWord){
+            var list_of_words = []
+            // create array of only words, to add in firebase 
+            this.value.forEach(function (arrayItem) {
+              list_of_words.push(arrayItem.name);
+            });
+
+
             db.collection('groupofwords').doc(this.defineWord).set({
-            wordsArray: this.value
+            wordsArray: list_of_words
             },{ merge: true }).catch(err => {
             console.log(err)
             })
 
-            this.addDefineDataToFirebase()
+            this.addDefineDataToFirebase(list_of_words)
 
             this.setAppGetData('True')
             this.defineWord = null
@@ -110,15 +117,7 @@ export default {
             this.feedback = 'אתה חייב להגדיר מילה'
         }
       },
-    addDefineDataToFirebase () {
-
-            var list_of_words = []
-
-            // create array of only words, to add in firebase 
-            this.value.forEach(function (arrayItem) {
-              list_of_words.push(arrayItem.name);
-
-            });
+    addDefineDataToFirebase (list_of_words) {
 
             var ref = this.ref_db.collection('moves')
             ref.add({
