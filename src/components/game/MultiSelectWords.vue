@@ -112,14 +112,19 @@ export default {
       },
     addDefineDataToFirebase () {
 
-        
-          //  this.getNumOfMoves()
+            var list_of_words = []
+
+            // create array of only words, to add in firebase 
+            this.value.forEach(function (arrayItem) {
+              list_of_words.push(arrayItem.name);
+
+            });
 
             var ref = this.ref_db.collection('moves')
             ref.add({
                 define: this.defineWord,
                 num_of_words: this.value.length,
-                words: this.value,
+                words: list_of_words,
                 }).catch(err => {
                 console.log(err)
                 })

@@ -64,7 +64,6 @@ export default {
   },
   mounted(){
     // the control in moves 
-    //TODO: Get the right moves from the specific game. First need to create the collection (look at other TODO)
     var ref = this.ref_db.collection('moves');
     
     // subscribe to changes to the 'messages' collection

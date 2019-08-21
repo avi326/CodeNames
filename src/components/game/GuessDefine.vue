@@ -4,7 +4,9 @@
         <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
          <div class="field">
         <label class="typo__label"> בחר מילים מהלוח</label>
-        <multiselect v-model="value" tag-placeholder="הוסף מילה זו" placeholder="חפש או בחר מילה" label="name" track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+        <multiselect v-model="value" label="name" track-by="code" :options="options"  
+        :searchable="true"  :allow-empty="false" :close-on-select="false" 
+        :selected="value" :taggable="true" deselect-label="חייב לבחור מילה" placeholder="חפש או בחר מילה" @update="updateValue"></multiselect>
       </div>
       <div class="field center">
         <button class="btn  light-blue lighten-2">נחש! </button>
@@ -29,9 +31,11 @@ export default {
   },
   data () {
     return {
-      value: [],
+      value: null,
       options: [],
-      words_arr: null
+      words_arr: null,
+      rival_define: null
+
     }
   },created () {
 
@@ -62,20 +66,73 @@ export default {
  
 
   },
+  mounted () {
+
+        var ref = this.ref_db.collection('moves');
+    
+    // subscribe to changes to the 'messages' collection
+    ref.onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        console.log(change)
+        if(change.type == 'added'){
+          let doc = change.doc
+            if (this.check_if_first_move) {
+              console.log("first move")
+
+            }
+            else {
+                this.rival_define = doc.data().define
+                console.log("define from firebase: ",  this.rival_define)
+            }
+
+        }
+      })
+    })
+
+  },
 
   methods: { 
-          addTag (newTag) {
-            const tag = {
-              name: newTag,
-              code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
-            }
-            this.options.push(tag)
-            this.value.push(tag)
+          updateValue (value) {
+            this.value = value
+            console.log("value: ",  this.value)
           },
           sendGuess(){
-            var ref = this.ref_db 
+            console.log("value(in sendguess): ",  this.value)
+            var ref = this.ref_db.collection('moves') 
+
+            const define_to_guess = this.rival_define   
+            const filteredQuery = ref.where('define', '==', define_to_guess);
+
+            filteredQuery.get()
+                .then(querySnapshot => {
+                          querySnapshot.forEach(function(doc) {
+                          // doc.data() is never undefined for query doc snapshots
+                          var list_of_word = doc.data().words
+                          console.log(doc.id, " => ", doc.data().words); 
+                          });
+                })
+
+                .catch(error => {
+                    console.log("erorr guess"); 
+                });
 
             },
+                check_if_first_move () {
+                  
+                var ref = this.ref_db.collection('moves');
+                var getDoc = ref
+                .get()
+                .then(doc => {
+                    if (doc.exists) {
+                      return false;
+
+                    } else {
+                      console.log('No such document!');
+                      return true;
+
+                    } 
+                })
+                },
         
   }
 }
