@@ -70,7 +70,7 @@ export default {
 
         var ref = this.ref_db.collection('moves');
     
-    // subscribe to changes to the 'messages' collection
+    // subscribe to changes to the 'moves' collection
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
         console.log(change)
@@ -82,9 +82,12 @@ export default {
             }
             else {
                 this.rival_define = doc.data().define
+                this.words_to_guess = doc.data().words
                 console.log("define from firebase: ",  this.rival_define)
-                // this.words_to_guess = this.get_words_to_guess()
-                console.log("words_to_guess from firebase: ",  this.words_to_guess)
+                // this.get_words_to_guess()
+
+
+               console.log("words_to_guess from firebase: ",  this.words_to_guess)
             }
 
         }
@@ -98,32 +101,34 @@ export default {
             this.value = value
             console.log("value: ",  this.value)
           },
-          get_words_to_guess () {
+          // get_words_to_guess () {
 
-            console.log("value(in sendguess): ",  this.value)
-            var ref = this.ref_db.collection('moves') 
+          //   console.log("value(in sendguess): ",  this.value)
+          //   var ref = this.ref_db.collection('moves') 
 
-            const define_to_guess = this.rival_define   
-            const filteredQuery = ref.where('define', '==', define_to_guess);
+          //   const define_to_guess = this.rival_define   
+          //   const filteredQuery = ref.where('define', '==', define_to_guess);
 
-            filteredQuery.get()
-                .then(querySnapshot => {
-                          querySnapshot.forEach(function(doc) {
-                          // doc.data() is never undefined for query doc snapshots
-                          console.log(doc.id, " => ", doc.data().words); 
-                          var arr_words = doc.data().words
-                          console.log("arr words: ", arr_words); 
-                          words_to_guess = arr_words
-                          console.log("words_to_guess: ", words_to_guess); 
-                          return arr_words
-                          });
-                })
+          //   filteredQuery.get()
+          //       .then(querySnapshot => {
+          //                 querySnapshot.forEach(function(doc) {
+          //                 // doc.data() is never undefined for query doc snapshots
+          //                 console.log(doc.id, " => ", doc.data().words); 
+          //                 var arr_words = doc.data().words
+          //                 this.words_to_guess = doc.data().words
+                          
 
-                .catch(error => {
-                    console.log("erorr guess"); 
-                });
+          //                 console.log("arr words: ", arr_words); 
+          //                 console.log("words_to_guess: ", this.words_to_guess); 
+                          
+          //                 });
+          //       })
 
-          },
+          //       // .catch(error => {
+          //       //     console.log("erorr guess"); 
+          //       // });
+
+          // },
           sendGuess(){
 
 
