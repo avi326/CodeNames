@@ -29,6 +29,9 @@
                 </li>
                 </ul>
             </b-card>
+            <b-card v-if="rivel_worng_guess"> 
+                <p> היריב טעה בניחוש המילים שלך </p>
+            </b-card>
     </div>
             
     </div>
@@ -57,7 +60,8 @@ export default {
       need_to_fix: null,
       need_to_guess: null,
       define_word: null,
-      rivel_words_arr: null
+      rivel_worng_guess: null
+      
     }
   },created () {
     this.turn = this.startTurn
@@ -87,6 +91,8 @@ export default {
         }
       })
     })
+
+    this.check_rival_guess()
   },
   methods: {
         setAppGetData (data) {
@@ -123,18 +129,25 @@ export default {
     })
     },
 
-    getMove () {
-    var ref = this.ref_db.collection('moves')
+check_rival_guess () {
+
+      var ref = this.ref_db.collection('moves')
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
         console.log(change)
-        if(change.type == 'added'){
+        if(change.type == 'modified'){
           let doc = change.doc
-          this.rivel_words_arr = doc.data().words
+          this.rivel_worng_guess = doc.data().words_worng_guess
+          if (this.rivel_worng_guess) {
+            console.log("there is worng guess",this.rivel_worng_guess)
+          } else {
+            console.log("right guess",this.rivel_worng_guess)
+          }
         }
       })
     })
-},
+
+}
   }
 }
 </script>
