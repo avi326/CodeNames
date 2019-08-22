@@ -1,5 +1,13 @@
 <template>
     <div>
+      <div>
+        <span  v-if="rival_define">
+            <p> השחקן היריב מאתגר אותך: </p>
+            <p>  {{ rival_define }} : {{ num_of_word_to_guess }}  </p>
+        
+        </span>
+      
+      </div>
         <form class="card-panel" @submit.prevent="sendGuess">
         <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
          <div class="field">
@@ -34,7 +42,9 @@ export default {
       value: null,
       options: [],
       rival_define: null,
-      words_to_guess: null
+      num_of_word_to_guess: null,
+      words_to_guess: null,
+      doc_id: null
 
     }
   },created () {
@@ -50,14 +60,14 @@ export default {
         } else {
                 temp_options = doc.data().table_board
 
-        console.log(temp_options);
+        // console.log(temp_options);
 
         var i = 0
         temp_options.forEach( (element) => {
            this.options.push({name: element, code: i++})
         })
         }
-        console.log(this.options)
+        // console.log(this.options)
     })
     .catch(err => {
         console.log('Error getting document', err);
@@ -73,16 +83,19 @@ export default {
     // subscribe to changes to the 'moves' collection
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        console.log(change)
-        if(change.type == 'added'){
+        if(change.type == 'added' && change.newIndex==0){ // 'change.newIndex==0' to take the new one
+          console.log(change)
           let doc = change.doc
             if (this.check_if_first_move()) {
               console.log("first move")
 
             }
             else {
-                this.rival_define = doc.data().define
+                this.doc_id = doc.id
+                console.log(this.doc_id)
+                this.rival_define = doc.data().define       
                 this.words_to_guess = doc.data().words
+                this.num_of_word_to_guess = this.words_to_guess.length
                 console.log("define from firebase: ",  this.rival_define)
                 // this.get_words_to_guess()
 
@@ -130,6 +143,39 @@ export default {
 
           // },
           sendGuess(){
+              var ref = this.ref_db.collection('moves').doc(this.doc_id)
+
+              console.log("value: ",  this.value.name)
+
+              if (this.words_to_guess.includes(this.value.name)) {
+                  console.log(this.value.name, "exists")
+                 ref.update({
+                    words_right_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
+                });
+              } else {
+                  console.log(this.value.name, "not exists")
+                  ref.update({
+                    words_worng_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
+                });
+
+              }
+
+              //  this.words_to_guess.forEach( word => {
+              //  if(word == this.value.name) {
+              //    console.log(word, this.value.name, "equal")
+              //    ref.update({
+              //       words_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
+              //   });
+              //   return // end
+
+              //  } else {
+              //    console.log(word, this.value.name, "not equal")
+              //    ref.update({
+              //       words_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
+              //   });
+              //   return // end
+              //  }
+              //  })
 
 
             },
@@ -154,6 +200,15 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style>
+
+<style scoped>
+span {
+  direction: rtl;
+
+}
+p {
+   font-weight: bold;
+}
+
 
 </style>

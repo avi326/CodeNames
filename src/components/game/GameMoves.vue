@@ -66,10 +66,10 @@ export default {
     // the control in moves 
     var ref = this.ref_db.collection('moves');
     
-    // subscribe to changes to the 'messages' collection
+    // subscribe to changes to the 'moves' collection
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        console.log(change)
+        // console.log(change)
         if(change.type == 'added'){
           let doc = change.doc
           this.moves.push({

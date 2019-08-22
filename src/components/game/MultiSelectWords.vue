@@ -64,14 +64,14 @@ export default {
               temp_options = doc.data().table_board // for guess 
             }
 
-        console.log(temp_options);
+       // console.log(temp_options);
 
         var i = 0
         temp_options.forEach( (element) => {
            this.options.push({name: element, code: i++})
         })
         }
-        console.log(this.options)
+       // console.log(this.options)
     })
     .catch(err => {
         console.log('Error getting document', err);
@@ -124,6 +124,8 @@ export default {
                 define: this.defineWord,
                 num_of_words: this.value.length,
                 words: list_of_words,
+                words_right_guess: null, // kind of temp array, for checking == 'words' array.
+                words_worng_guess: null // when guess worng word, add to this array.
                 }).catch(err => {
                 console.log(err)
                 })

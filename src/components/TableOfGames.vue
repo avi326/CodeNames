@@ -71,7 +71,6 @@ export default {
       db.collection('users').where('user_id', '==', user.uid).get()
         .then(snapshot => {
           snapshot.forEach((doc) => {
-            console.log(doc.id)
             this.alias = doc.id // doc id is the alias of user
           })
         }).then(() => {
@@ -87,7 +86,7 @@ export default {
     // subscribe to changes to the 'games' collection
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        console.log(change)
+        // console.log(change)
         if(change.type == 'added'){
           let doc = change.doc
           this.games.push({

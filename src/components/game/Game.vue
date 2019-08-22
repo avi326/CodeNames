@@ -76,7 +76,7 @@ created () {
 
     //get the game as to the initiator (this first player)
     this.ref = db.collection('games').doc(this.player_one_alias); 
-    console.log(typeof this.ref);
+    // console.log(typeof this.ref);
     this.init_firebase_game ()
 
     // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
@@ -84,9 +84,9 @@ created () {
     .get()
     .then(doc => {
         if (!doc.exists) {
-        console.log('No such document!');
+        console.log('No such game document!');
         } else {
-            console.log('Document data:', doc.data());
+            // console.log('Document data:', doc.data());
             this.table_board = doc.data().table_board
 
             //First check if it's player two becuase player one most to be in this level
