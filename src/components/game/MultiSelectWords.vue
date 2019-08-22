@@ -125,7 +125,8 @@ export default {
                 num_of_words: this.value.length,
                 words: list_of_words,
                 words_right_guess: null, // kind of temp array, for checking == 'words' array.
-                words_worng_guess: null // when guess worng word, add to this array.
+                words_worng_guess: null, // when guess worng word, add to this array.
+                timestamp: Date.now()
                 }).catch(err => {
                 console.log(err)
                 })

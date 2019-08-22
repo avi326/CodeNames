@@ -78,12 +78,12 @@ export default {
   },
   mounted () {
 
-        var ref = this.ref_db.collection('moves');
+        var ref = this.ref_db.collection('moves').orderBy('timestamp');
     
     // subscribe to changes to the 'moves' collection
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        if(change.type == 'added' && change.newIndex==0){ // 'change.newIndex==0' to take the new one
+        if(change.type == 'added'){ // 'change.newIndex==0' to take the new one
           console.log(change)
           let doc = change.doc
             if (this.check_if_first_move()) {

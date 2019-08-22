@@ -7,12 +7,11 @@
       <div v-if="need_to_fix">
         <p>  תקן את הניחוש הקודם שלך</p>
       </div>
-      <!--  v-if="need_to_guess" -->
-      <div> 
+      <div v-if="need_to_guess"> 
         <p> נחש את ההגדרה הנוכחית</p>
         <GuessDefine :ref_db="ref_db"/>
       </div>
-      <div id="define">
+      <div id="define" v-if="!need_to_guess">
         <p> אתגר את השחקן השני! </p>
         <MultiSelectWords v-if="startTurn!=null" :blue_words="'blue_words_player_one'" :setAppGetData="setAppGetData"  :ref_db="ref_db"/>
         <MultiSelectWords v-else :blue_words="'blue_words_player_two'" :setAppGetData="setAppGetData"  :ref_db="ref_db"/>
@@ -29,7 +28,7 @@
                 </li>
                 </ul>
             </b-card>
-            <b-card v-if="rivel_worng_guess"> 
+            <b-card v-if="words_worng_guess"> 
                 <p> היריב טעה בניחוש המילים שלך </p>
             </b-card>
     </div>
@@ -60,7 +59,9 @@ export default {
       need_to_fix: null,
       need_to_guess: null,
       define_word: null,
-      rivel_worng_guess: null
+      words: null,
+      words_right_guess: null,
+      words_worng_guess: null
       
     }
   },created () {
@@ -68,7 +69,7 @@ export default {
   },
   mounted(){
     // the control in moves 
-    var ref = this.ref_db.collection('moves');
+    var ref = this.ref_db.collection('moves').orderBy('timestamp');
     
     // subscribe to changes to the 'moves' collection
     ref.onSnapshot(snapshot => {
@@ -84,6 +85,7 @@ export default {
 
             }
             else {
+                this.need_to_guess=true
                 this.replaceTurn();
             }
             
@@ -91,8 +93,8 @@ export default {
         }
       })
     })
-
-    this.check_rival_guess()
+    this.check_my_guess() // for the player that guess.
+    this.check_rival_guess() // for the rival that waiting.
   },
   methods: {
         setAppGetData (data) {
@@ -127,21 +129,44 @@ export default {
 
         } 
     })
+    }, check_my_guess () {
+
+              var ref = this.ref_db.collection('moves').orderBy('timestamp')
+                ref.onSnapshot(snapshot => {
+                snapshot.docChanges().forEach(change => {
+                    console.log(change)
+                    if(change.type == 'modified'){
+                    let doc = change.doc
+                    this.words = doc.data().words
+                    this.words_right_guess = doc.data().words_right_guess
+                    this.words_worng_guess = doc.data().words_worng_guess
+                    if (this.words_worng_guess) {
+                        console.log("my guess is worng",this.words_worng_guess)
+                        this.need_to_guess=false
+                    } else if (this.words.length == this.words_right_guess.length) {
+                        console.log("OMG! complete guess!",this.words_right_guess.length)
+                        this.need_to_guess=false
+                    }
+                    }
+                })
+    })
+
+ 
     },
 
 check_rival_guess () {
 
-      var ref = this.ref_db.collection('moves')
+      var ref = this.ref_db.collection('moves').orderBy('timestamp')
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
         console.log(change)
         if(change.type == 'modified'){
           let doc = change.doc
-          this.rivel_worng_guess = doc.data().words_worng_guess
-          if (this.rivel_worng_guess) {
-            console.log("there is worng guess",this.rivel_worng_guess)
+          this.words_worng_guess = doc.data().words_worng_guess
+          if (this.words_worng_guess) {
+            console.log("there is worng guess",this.words_worng_guess)
           } else {
-            console.log("right guess",this.rivel_worng_guess)
+            console.log("right guess",this.words_worng_guess)
           }
         }
       })
