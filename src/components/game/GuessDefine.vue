@@ -18,9 +18,16 @@
       </div>
       <div class="field center">
         <button class="btn  light-blue lighten-2">נחש! </button>
-        
       </div>
          </form>
+
+      <div>
+          <ul class="show_words_right_guess" v-chat-scroll> <!-- print all words_right_guess -->
+          <li v-for="right_word in show_words_right_guess" :key="right_word.id">
+              <span class="right_word">{{ right_word }} צדקת! אפשר להמשיך.</span>
+          </li>
+          </ul>
+      </div>
     </div>
 </template>
 
@@ -44,6 +51,7 @@ export default {
       rival_define: null,
       num_of_word_to_guess: null,
       words_to_guess: null,
+      show_words_right_guess: [],
       doc_id: null
 
     }
@@ -152,6 +160,7 @@ export default {
                  ref.update({
                     words_right_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
                 });
+                this.show_words_right_guess.push(this.value.name)
               } else {
                   console.log(this.value.name, "not exists")
                   ref.update({

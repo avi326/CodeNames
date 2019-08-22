@@ -9,9 +9,19 @@
       </div>
       <div v-if="need_to_guess"> 
         <p> נחש את ההגדרה הנוכחית</p>
-        <GuessDefine :ref_db="ref_db"/>
+            <GuessDefine :ref_db="ref_db"/>
       </div>
       <div id="define" v-if="!need_to_guess">
+        <b-card v-if="words_worng_guess">
+                <ul class="words_worng_guess" v-chat-scroll> <!-- print all words_right_guess -->
+                <li v-for="worng_word in words_worng_guess" :key="worng_word.id">
+                    <span class="worng_word"> המילה  <b> {{ worng_word }} </b> איננה נכונה</span>
+                </li>
+                </ul>
+        </b-card>
+        <b-card v-else-if="words_right_guess && words && words_right_guess.length==words.length">
+            <span class="right_word"> הצלחת לנחש את כל המילים!  </span>
+        </b-card>
         <p> אתגר את השחקן השני! </p>
         <MultiSelectWords v-if="startTurn!=null" :blue_words="'blue_words_player_one'" :setAppGetData="setAppGetData"  :ref_db="ref_db"/>
         <MultiSelectWords v-else :blue_words="'blue_words_player_two'" :setAppGetData="setAppGetData"  :ref_db="ref_db"/>
@@ -29,7 +39,15 @@
                 </ul>
             </b-card>
             <b-card v-if="words_worng_guess"> 
-                <p> היריב טעה בניחוש המילים שלך </p>
+             
+                <ul class="words_worng_guess" v-chat-scroll> <!-- print all words_right_guess -->
+                <li v-for="worng_word in words_worng_guess" :key="worng_word.id">
+                    <span class="worng_word"> היריב בחר את המילה  <b> {{ worng_word }} </b> וטעה</span>
+                </li>
+                </ul>
+            </b-card>
+            <b-card v-else-if="words_right_guess && words && words_right_guess.length==words.length">
+                 <p> היריב צדק בכל המילים שלך </p>
             </b-card>
     </div>
             
