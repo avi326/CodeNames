@@ -72,6 +72,12 @@ components: {
     GameChat,
     GameMoves
 },
+
+destroyed() {
+    db.collection('games').doc(this.player_one_alias).delete()
+    db.collection('table_of_players').doc(this.player_one_alias).delete()
+},
+
 created () {
 
     //get the game as to the initiator (this first player)

@@ -20,7 +20,8 @@
             <td v-if="game.player2==''"> <router-link :to="{ name: 'Game', params: {player_one_alias: game.player1 , player_two_alias: alias }}"> Join!  </router-link> </td>
             <td v-else> {{ game.player2 }} </td>
             <td class="play_now">  {{ game.countPlayers }} </td>
-            <td> <i class="material-icons delete" @click="deleteGame(game.id)">delete</i> </td>
+            <td v-if="alias == game.player1"> <i class="material-icons delete" @click="deleteGame()">delete</i> </td>
+            <td v-if="game.player2!=''"> <router-link :to="{ name: 'Game', params: {player_one_alias: game.player1 , player_two_alias: alias }}"> Resume game </router-link> </td>
           </tr>
           <tr>
              <td><NewGame :alias="alias"/></td>
@@ -49,14 +50,14 @@ export default {
     NewGame
   },
   methods: {
-    deleteGame(id){
+    deleteGame(){
       // delete doc from firestore
       console.log(id)
       db.collection('games').doc(this.alias).delete()
-      db.collection('table_of_players').doc(id).delete()
+      db.collection('table_of_players').doc(this.alias).delete()
       .then(() => {
         this.games = this.games.filter(game => {
-          return game.id != id
+          return game.player1 != this.alias
         })
       }).catch(err => {
         console.log(err)
