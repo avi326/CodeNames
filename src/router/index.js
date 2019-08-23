@@ -62,7 +62,15 @@ export default new Router({
       path: '/game',
       name: 'Game',
       component: Game,
-      props: true
+      props: true,
+      beforeRouteUpdate (to, from , next) {
+        const answer = window.confirm('Do you really want to leave? Game will ended and delete!')
+        if (answer) {
+            next()
+        } else {
+            next(false)
+        }
+      }
     }
   ]
 })

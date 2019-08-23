@@ -20,8 +20,8 @@
             <td v-if="game.player2==''"> <router-link :to="{ name: 'Game', params: {player_one_alias: game.player1 , player_two_alias: alias }}"> Join!  </router-link> </td>
             <td v-else> {{ game.player2 }} </td>
             <td class="play_now">  {{ game.countPlayers }} </td>
-            <td v-if="alias == game.player1"> <i class="material-icons delete" @click="deleteGame()">delete</i> </td>
-            <td v-if="game.player2!=''"> <router-link :to="{ name: 'Game', params: {player_one_alias: game.player1 , player_two_alias: alias }}"> Resume game </router-link> </td>
+            <td v-if="alias == game.player1"> <button @click="deleteGame()" class="material-icons delete">delete </button> </td>
+            <td v-if="game.player2 == alias || game.player1 == alias" > <router-link :to="{ name: 'Game', params: {player_one_alias: game.player1 , player_two_alias: alias }}"> Resume game </router-link> </td>
           </tr>
           <tr>
              <td><NewGame :alias="alias"/></td>
@@ -52,7 +52,6 @@ export default {
   methods: {
     deleteGame(){
       // delete doc from firestore
-      console.log(id)
       db.collection('games').doc(this.alias).delete()
       db.collection('table_of_players').doc(this.alias).delete()
       .then(() => {
@@ -63,12 +62,13 @@ export default {
         console.log(err)
       })
     }
-
   },
-  created(){
-  let user = firebase.auth().currentUser;
 
-  if(user){
+  created()
+  {
+    let user = firebase.auth().currentUser;
+
+    if(user){
       db.collection('users').where('user_id', '==', user.uid).get()
         .then(snapshot => {
           snapshot.forEach((doc) => {
@@ -97,17 +97,15 @@ export default {
             countPlayers: doc.data().countPlayers,
             time: moment(doc.data().time).format('lll')
           })
-           // this.$router.push() 
-
+        }
+        else if (change.type == 'removed' || change.type == 'modified')
+        {
+           //Every game deletion need to reload the page and and update the table of games
+          window.location.reload()
         }
       })
     })
-  }
-
-
-
-
-  
+  },
 }
 </script>
 
