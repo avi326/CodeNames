@@ -46,16 +46,21 @@ export default {
   },
   data () {
     return {
+      alias: null,
       value: null,
       options: [],
       rival_define: null,
       num_of_word_to_guess: null,
       words_to_guess: null,
       show_words_right_guess: [],
-      doc_id: null
+      doc_id: null,
+      rival_map: null
 
     }
   },created () {
+    // init current alias of connected player
+    this.init_user_alias()
+    this.get_rivel_blue_words()
 
     var getDoc = this.ref_db;
     getDoc.get()
@@ -122,70 +127,31 @@ export default {
             this.value = value
             console.log("value: ",  this.value)
           },
-          // get_words_to_guess () {
-
-          //   console.log("value(in sendguess): ",  this.value)
-          //   var ref = this.ref_db.collection('moves') 
-
-          //   const define_to_guess = this.rival_define   
-          //   const filteredQuery = ref.where('define', '==', define_to_guess);
-
-          //   filteredQuery.get()
-          //       .then(querySnapshot => {
-          //                 querySnapshot.forEach(function(doc) {
-          //                 // doc.data() is never undefined for query doc snapshots
-          //                 console.log(doc.id, " => ", doc.data().words); 
-          //                 var arr_words = doc.data().words
-          //                 this.words_to_guess = doc.data().words
-                          
-
-          //                 console.log("arr words: ", arr_words); 
-          //                 console.log("words_to_guess: ", this.words_to_guess); 
-                          
-          //                 });
-          //       })
-
-          //       // .catch(error => {
-          //       //     console.log("erorr guess"); 
-          //       // });
-
-          // },
           sendGuess(){
-              var ref = this.ref_db.collection('moves').doc(this.doc_id)
+              var ref_moves = this.ref_db.collection('moves').doc(this.doc_id)
+              var ref = this.ref_db
+              console.log(this.rival_map)
+
 
               console.log("value: ",  this.value.name)
 
               if (this.words_to_guess.includes(this.value.name)) {
                   console.log(this.value.name, "exists")
-                 ref.update({
+                 ref_moves.update({
                     words_right_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
                 });
+
+                this.remove_from_rivel_blue_words(this.value) // remove value from blue words of rival because this is current guess.
+
+               
                 this.show_words_right_guess.push(this.value.name)
               } else {
                   console.log(this.value.name, "not exists")
-                  ref.update({
+                  ref_moves.update({
                     words_worng_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
                 });
 
               }
-
-              //  this.words_to_guess.forEach( word => {
-              //  if(word == this.value.name) {
-              //    console.log(word, this.value.name, "equal")
-              //    ref.update({
-              //       words_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
-              //   });
-              //   return // end
-
-              //  } else {
-              //    console.log(word, this.value.name, "not equal")
-              //    ref.update({
-              //       words_guess: firebase.firestore.FieldValue.arrayUnion(this.value.name)
-              //   });
-              //   return // end
-              //  }
-              //  })
-
 
             },
                 check_if_first_move () {
@@ -203,6 +169,97 @@ export default {
                     } 
                 })
                 },
+
+                init_user_alias() {
+                    let user = firebase.auth().currentUser;
+
+                    console.log(user)
+
+                    if(user){
+                        db.collection('users').where('user_id', '==', user.uid).get()
+                          .then(snapshot => {
+                            snapshot.forEach((doc) => {
+                             console.log("id in get_user_alias: ",doc.id)
+                             this.alias = doc.id
+                             console.log(" this.alias in get_user_alias: ",this.alias)
+                            })
+                          }).then(() => {
+
+
+                          }).catch( (err) => {console.log(err)}
+
+                          )
+                          } else {
+                            console.log("error: no user connected")
+                        }
+                },
+                get_rivel_blue_words () {
+                      var getDoc = this.ref_db
+                      .get()
+                      .then(doc => {
+                          if (!doc.exists) {
+                          console.log('No such game document!');
+                          } else {
+                              console.log(doc.data())
+                              // console.log('Document data:', doc.data());
+                              // this.table_board = doc.data().table_board
+                              var player_one_alias = doc.data().alias_player_one
+                              var player_two_alias = doc.data().alias_player_two
+
+                             // get_rivel_blue_words
+                              if (this.alias == player_two_alias)
+                              {
+                                console.log("map: ", doc.data().blue_words_player_one)
+                                this.rival_map = doc.data().blue_words_player_one
+                              }
+                              else if (this.alias == player_one_alias)
+                              {
+                                  console.log("map: ", doc.data().blue_words_player_two)
+                                  this.rival_map = doc.data().blue_words_player_two
+                              }
+                          } 
+                      })
+                      .catch(err => {
+                          console.log('Error getting document', err);
+                      });
+                },
+                                remove_from_rivel_blue_words (value) {
+                      var getDoc = this.ref_db
+                      .get()
+                      .then(doc => {
+                          if (!doc.exists) {
+                          console.log('No such game document!');
+                          } else {
+                              console.log(doc.data())
+                              // console.log('Document data:', doc.data());
+                              // this.table_board = doc.data().table_board
+                              var player_one_alias = doc.data().alias_player_one
+                              var player_two_alias = doc.data().alias_player_two
+
+                             // get_rivel_blue_words
+                              if (this.alias == player_two_alias)
+                              {
+                                console.log("map: ", doc.data().blue_words_player_one)
+                                this.rival_map = doc.data().blue_words_player_one
+                                this.ref_db.update({
+                                blue_words_player_one: firebase.firestore.FieldValue.arrayRemove(value.name),
+                                // TODO: remove from table_board. problem: common table board.
+                              })
+                              }
+                              else if (this.alias == player_one_alias)
+                              {
+                                  console.log("map: ", doc.data().blue_words_player_two)
+                                  this.rival_map = doc.data().blue_words_player_two
+                                this.ref_db.update({
+                                blue_words_player_two: firebase.firestore.FieldValue.arrayRemove(value.name)
+                              })
+                              }
+                          } 
+                      })
+                      .catch(err => {
+                          console.log('Error getting document', err);
+                      });
+                }
         
   }
 }
