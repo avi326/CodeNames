@@ -3,17 +3,21 @@
 
         <div> 
             <p> {{ player_one_alias }}  שחקן 1 </p>
+            <p  v-if="player_one_count_moves"> {{ player_one_count_moves }}   תור:  </p>
             <p> נגד </p>
             <p> {{ player_two_alias }}  שחקן 2 </p>
-        <div>
-            {{ number_check }}
+            <p  v-if="player_two_count_moves"> {{ player_two_count_moves }}   תור:  </p>
 
+             <p v-if="count_moves">  {{ count_moves }}  מספר מהלכים כולל עד כה</p>
+
+        <div>
 
         </div>
 
         </div>
         <div style="text-align: center; width: 65%; overflow: hidden;">
             <div style="width: 400px;  float: left;">
+             
              <GameMoves v-if="turn" :startTurn="turn"  :ref_db="ref"/>
              <GameMoves v-else :ref_db="ref"/>
             </div>
@@ -64,8 +68,12 @@ data () {
         table_board: [],
         map_player: [],
         moves: [],
-        number_check: [],
-        ref: null
+        ref: null,
+        count_moves: null,
+        player_one_count_moves: null,
+        player_two_count_moves: null
+
+
     }
 },
 components: {
@@ -78,6 +86,7 @@ created () {
     this.ref = db.collection('games').doc(this.player_one_alias); 
     // console.log(typeof this.ref);
     this.init_firebase_game ()
+    // this.getNumOfMoves ()
 
     // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
     var getDoc = this.ref
@@ -138,6 +147,38 @@ created () {
         }
 }, mounted () {
 
+    this.getNumOfMoves ()
+
+},
+destroyed () {
+
+    console.log("game over")
+    //        this.ref.collection('moves').getDocuments().then((snapshot) => {
+    //   return snapshot.documents.map((doc) => {
+    //     doc.reference.delete();
+    //   });
+    // });
+
+    //     this.ref.collection("chat").listDocuments().then(val => {
+    //     val.map((val) => {
+    //         val.delete()
+    //     })
+    // })
+
+        // delete row from table_of_games.
+        db.collection('table_of_players').doc(this.player_one_alias).delete().then(function() {
+            console.log("deleted from table_of_players successfully deleted!");
+            }).catch(function(error) {
+                console.error("Error deleted from table_of_players ", error);
+            });
+
+        // delete game
+        this.ref.delete().then(function() {
+            console.log("game successfully deleted!");
+            }).catch(function(error) {
+                console.error("Error removing game: ", error);
+            });
+        this.$router.push({ name: 'TableOfGames' })
 },
 methods: {
     init_firebase_game () {
@@ -146,20 +187,43 @@ methods: {
     },
 
     play_the_turn () {
-    var ref = this.ref;
-    // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
-    var getDoc = ref
-    .get()
-    .then(doc => {
-        if (!doc.exists) {
-        console.log('No such document!');
-        } else {
-           
-            this.table_board = doc.data().table_board
+        var ref = this.ref;
+        // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
+        var getDoc = ref
+        .get()
+        .then(doc => {
+            if (!doc.exists) {
+            console.log('No such document!');
+            } else {
+            
+                this.table_board = doc.data().table_board
 
-        } 
-    })
+            } 
+        })
     },
+    getNumOfMoves () {
+
+        var ref = this.ref
+            .onSnapshot(doc => {
+                            console.log("numMoves firebase: ",doc.data().num_of_moves)
+                            this.count_moves = doc.data().num_of_moves
+                            console.log(" this.count_moves: ", this.count_moves)
+
+                            // count moves for each player
+                            this.player_one_count_moves =  Math.floor(this.count_moves/2) + 1
+                            this.player_two_count_moves = Math.floor(this.count_moves/2)
+
+                            this.check_game_over()
+            });
+
+    },
+    check_game_over () {
+
+        if (this.count_moves==2) {
+            this.$destroy()
+        }
+    
+}
 
   }
 }

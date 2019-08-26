@@ -190,7 +190,8 @@ check_rival_guess () {
       })
     })
 
-}
+},
+
   }
 }
 </script>

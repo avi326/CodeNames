@@ -107,6 +107,7 @@ export default {
             })
 
             this.addDefineDataToFirebase(list_of_words)
+            this.increase_num_moves_by_one()
 
             this.setAppGetData('True')
             this.defineWord = null
@@ -134,40 +135,33 @@ export default {
                 this.num_of_words = null
                 this.feedback = null
     },
-    // getNumOfMoves () {
-    //     var ref =  db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx')
-    //     ref.get().then(function(documentSnapshot) {
-    //         if (documentSnapshot.exists) {
-    //             var data = documentSnapshot.data().num_of_moves;
-    //             console.log(data)
-    //             return data;
-    //         } else {
-    //             console.log('document not found');
-    //         }
 
-            
+    increase_num_moves_by_one () {
 
-    //     });
+                      var getDoc = this.ref_db
+                      .get()
+                      .then(doc => {
+                          if (!doc.exists) {
+                          console.log('No such game document!');
+                          } else {
 
-    // },
+                              var num_of_moves = doc.data().num_of_moves
+                              num_of_moves += 1
 
-    // increaseMove () {
-
-    //             var ref = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').collection('moves')
-    //         ref.add({
-    //             define: this.defineWord,
-    //             num_of_words: this.value.length,
-    //             words: this.value,
-    //             }).catch(err => {
-    //             console.log(err)
-    //             })
-    //             this.define = null
-    //             this.num_of_words = null
-    //             this.feedback = null
+                                console.log("mnum_of_moves: ", doc.data().num_of_moves)
+                                this.ref_db.update({
+                                num_of_moves: num_of_moves
+                              })
+                              console.log("mnum_of_moves (after increase): ", doc.data().num_of_moves)
+                              
+                          } 
+                      })
+                      .catch(err => {
+                          console.log('Error getting document', err);
+                      });
 
 
-
-    // }
+    }
 
   },
   mounted() {

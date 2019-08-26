@@ -223,7 +223,7 @@ export default {
                           console.log('Error getting document', err);
                       });
                 },
-                                remove_from_rivel_blue_words (value) {
+                    remove_from_rivel_blue_words (value) {
                       var getDoc = this.ref_db
                       .get()
                       .then(doc => {
