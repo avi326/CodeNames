@@ -310,9 +310,10 @@ methods: {
 },
     end_game () {
 
-        // let res = this.$confirm('Do you really want to exit?', { title: 'Warning' })
-             this.$destroy() 
-        
+        // change this.count to 12 for end the game
+            this.ref.update({
+                    num_of_moves: 12
+                })
        
     }
 
