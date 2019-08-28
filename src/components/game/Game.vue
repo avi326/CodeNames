@@ -164,28 +164,45 @@ created () {
 destroyed () {
 
     console.log("game over")
-    //        this.ref.collection('moves').getDocuments().then((snapshot) => {
-    //   return snapshot.documents.map((doc) => {
-    //     doc.reference.delete();
-    //   });
-    // });
 
-    //     this.ref.collection("chat").listDocuments().then(val => {
-    //     val.map((val) => {
-    //         val.delete()
-    //     })
-    // })
-        //         this.ref.collection("chat").get().then(function(querySnapshot) {
-        //     querySnapshot.forEach(function(doc) {
-        //         doc.delete()
-        //     });
-        // });
+            // First perform the query
+            this.ref.collection('chat').get()
+            .then(function(querySnapshot) {
+                    // Once we get the results, begin a batch
+                    var batch = db.batch();
 
-        //    this.ref.collection('moves').get().then(function(querySnapshot) {
-        //     querySnapshot.forEach(function(doc) {
-        //         doc.delete()
-        //     });
-        // });
+                    querySnapshot.forEach(function(doc) {
+                        // For each doc, add a delete operation to the batch
+                        batch.delete(doc.ref);
+                    });
+
+                    // Commit the batch
+                    return batch.commit();
+
+            }).then(function() {
+                // Delete completed!
+                // ...
+            }); 
+
+        // First perform the query
+            this.ref.collection('moves').get()
+            .then(function(querySnapshot) {
+                    // Once we get the results, begin a batch
+                    var batch = db.batch();
+
+                    querySnapshot.forEach(function(doc) {
+                        // For each doc, add a delete operation to the batch
+                        batch.delete(doc.ref);
+                    });
+
+                    // Commit the batch
+                    return batch.commit();
+
+            }).then(function() {
+                // Delete completed!
+                // ...
+            }); 
+
 
 
         // delete row from table_of_games.
@@ -228,6 +245,7 @@ methods: {
 
         var ref = this.ref
             .onSnapshot(doc => {
+                if (doc.exists) {
                             this.count_moves = doc.data().num_of_moves
 
                             // count moves for each player
@@ -235,6 +253,7 @@ methods: {
                             this.player_two_count_moves = Math.floor(this.count_moves/2)
 
                             this.check_game_over()
+                }
             });
 
     },
