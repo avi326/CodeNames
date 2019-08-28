@@ -285,6 +285,7 @@ methods: {
     check_game_over () {
 
         if (this.count_moves==12) {
+              window.alert("נגמרו לכם התורות. המשחק הסתיים!  ");
             this.$destroy()
         } else  {
         this.ref
@@ -301,6 +302,7 @@ methods: {
 
                if (blue_words_player_one.length == 0  && blue_words_player_two.length == 0 )
                {
+                   window.alert("סיימתם את המשחק בהצלחה! ");
                     this.$destroy()
                }
 
@@ -311,6 +313,7 @@ methods: {
     end_game () {
 
         // change this.count to 12 for end the game
+          window.alert("בחרתם לסיים את המשחק. תודה רבה! ");
             this.ref.update({
                     num_of_moves: 12
                 })

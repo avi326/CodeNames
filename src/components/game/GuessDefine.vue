@@ -214,7 +214,8 @@ export default {
                                 {
                                 console.log(this.value.name," in black words")
                                 console.log("you choose black word, game over.")
-                                setTimeout(this.game_over(this.value.name), 3000)
+                                window.alert("נבחרה מילה שחורה של היריב. המשחק הסתיים!  ");
+                               this.game_over(this.value.name)
                                   
                                 } else {
                                   console.log(this.value.name," is not in black words")
