@@ -3,6 +3,8 @@
 
     <div v-if="turn">
       <b-card>
+          <b-spinner small  variant="success" type="grow"></b-spinner>
+
       <!-- <div v-if="need_to_fix">
         <p>  תקן את הניחוש הקודם שלך</p>
         <FixGuess :ref_db="ref_db" :move_doc_id="need_to_fix"/>

@@ -2,6 +2,11 @@
     <div class="game">
     <b-container class="bv-example-row">
     <b-row>
+        <b-col cols="1"  align-self="center">
+                <form class="endGame" @submit.prevent="end_game">
+                <button class="btn red ">סיים-משחק! </button>
+                </form>
+        </b-col>
         <b-col>
             <div> 
             <p> {{ player_one_alias }}  שחקן 1 </p>
@@ -10,10 +15,12 @@
             <p> {{ player_two_alias }}  שחקן 2 </p>
             <p  v-if="player_two_count_moves"> {{ player_two_count_moves }}   תור:  </p>
 
-             <p v-if="count_moves">  {{ count_moves }}  מספר מהלכים כולל עד כה</p>
-                <form class="endGame" @submit.prevent="end_game">
-                <button class="btn deep-purple">סיים-משחק! </button>
-                </form>
+            
+              <h5> 
+                    <p v-if="count_moves">  {{ count_moves }}  מספר מהלכים כולל עד כה</p> 
+                    <p v-if="count_moves=='8'">  המשחק מסתיים בקרוב... </p> 
+              </h5>
+              <b-progress :value="count_moves" :max="12" show-value></b-progress>
             </div>
         </b-col>
     </b-row>
