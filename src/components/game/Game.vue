@@ -9,6 +9,9 @@
             <p  v-if="player_two_count_moves"> {{ player_two_count_moves }}   תור:  </p>
 
              <p v-if="count_moves">  {{ count_moves }}  מספר מהלכים כולל עד כה</p>
+                <form class="endGame" @submit.prevent="end_game">
+                <button class="btn deep-purple">סיים-משחק! </button>
+                </form>
         <div>
 
         </div>
@@ -52,12 +55,15 @@
                 </table>
             </div>
         </div>
+
 </template>
 
 <script>
 import GameChat from '@/components/game/GameChat'
 import GameMoves from '@/components/game/GameMoves'
 import db from '@/firebase/init'
+//import VuetifyConfirm from 'vuetify-confirm'
+
 
 export default {
 name: 'Game',
@@ -79,6 +85,12 @@ components: {
     GameChat,
     GameMoves
 },
+
+// destroyed() {
+//     db.collection('games').doc(this.player_one_alias).delete()
+//     db.collection('table_of_players').doc(this.player_one_alias).delete()
+// },
+
 created () {
 
     //get the game as to the initiator (this first player)
@@ -163,6 +175,18 @@ destroyed () {
     //         val.delete()
     //     })
     // })
+        //         this.ref.collection("chat").get().then(function(querySnapshot) {
+        //     querySnapshot.forEach(function(doc) {
+        //         doc.delete()
+        //     });
+        // });
+
+        //    this.ref.collection('moves').get().then(function(querySnapshot) {
+        //     querySnapshot.forEach(function(doc) {
+        //         doc.delete()
+        //     });
+        // });
+
 
         // delete row from table_of_games.
         db.collection('table_of_players').doc(this.player_one_alias).delete().then(function() {
@@ -219,8 +243,15 @@ methods: {
         if (this.count_moves==12) {
             this.$destroy()
         }
-    
-}
+},
+    end_game () {
+
+        // let res = this.$confirm('Do you really want to exit?', { title: 'Warning' })
+             this.$destroy() 
+        
+       
+    }
+
 
   }
 }
@@ -232,6 +263,13 @@ div.game {
     direction: rtl;
     text-align: center
     
+}
+form.endGame {
+    margin-left:auto; 
+    margin-right:auto;
+    text-align: center;
+    width: 100px; 
+
 }
 table.words {
     margin-left:auto; 

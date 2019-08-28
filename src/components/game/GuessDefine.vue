@@ -170,19 +170,58 @@ export default {
                 console.log("Need to fix id doc: ",  this.doc_id)
                  this.need_to_fix = this.doc_id
 
-                    // end game if guess word is black.
-                    // this.check_rivel_black_words(this.alias, this.value.name)
-                    // if (this.is_in_black_words) {
-                    //     console.log("you choose black word, game over.", this.is_in_black_words)
-                    //     this.$parent.game_over()
-                    // }
-                    // else {
-                    //     console.log(" the word not in black word", this.is_in_black_words)
-                    // }
+                    // check black word:
+                    var self = this
+                    var temp_arr;
+
+                     var getDoc = this.ref_db.get()
+                          .then(doc => {
+                             if (!doc.exists) {
+                          console.log('No such game document!');
+                          } else {
+                              // console.log('Document data:', doc.data());
+                              
+                              var player_one_alias = doc.data().alias_player_one
+                              var player_two_alias = doc.data().alias_player_two
+                              
+                             
+                             // get_rivel_blue_words
+                              if (this.alias == player_two_alias)
+                              {
+                                console.log("player_2: rival 1 black: ")
+                                 console.log(doc.data().black_words_player_one)
+                                temp_arr = doc.data().black_words_player_one
+                               
+                              }
+                              else
+                              {
+                                console.log("player_1: rival 2 black: ")
+                                console.log(doc.data().black_words_player_two)
+                                temp_arr = doc.data().black_words_player_two
+                              }
+
+                              if (temp_arr.includes(this.value.name))
+                                {
+                                console.log(this.value.name," in black words")
+                                console.log("you choose black word, game over.")
+                                setTimeout(this.game_over(this.value.name), 3000)
+                                  
+                                } else {
+                                  console.log(this.value.name," is not in black words")
+                                  console.log(" the word not in black word")
+
+                                }
+                           }
+                          })
 
 
               }
 
+            }, game_over (word) {
+                
+                          this.ref_db.update({
+                              num_of_moves: 12
+                            })
             },
                 check_if_first_move () {
                   
@@ -222,38 +261,11 @@ export default {
                             console.log("error: no user connected")
                         }
                 },
-                // get_rivel_blue_and_black_words () {
 
-                //      this.ref_db
-                //           .onSnapshot(function(doc) {
-                //               console.log(doc.data())
-                //               // console.log('Document data:', doc.data());
-                //               // this.table_board = doc.data().table_board
-                //               var player_one_alias = doc.data().alias_player_one
-                //               var player_two_alias = doc.data().alias_player_two
-                //               console.log(this.alias)
-                //               console.log(player_two_alias)
-
-                //              // get_rivel_blue_words
-                //               if (this.alias == player_two_alias)
-                //               {
-                //                 console.log("player_2: rival 1 blue:", doc.data().blue_words_player_one)
-                //                 console.log("player_2: rival 1 black: ", doc.data().black_words_player_one)
-                //                 this.rival_map = doc.data().blue_words_player_one
-                //                 this.rival_black_words = doc.data().black_words_player_one
-
-                //               }
-                //               else
-                //               {
-                //                   console.log("player_1: rival 2 blue:", doc.data().blue_words_player_two)
-                //                   console.log("player_1: rival 2 black: ", doc.data().black_words_player_two)
-                //                   this.rival_map = doc.data().blue_words_player_two
-                //                   this.rival_black_words = doc.data().black_words_player_two
-                //               }
-                //           });
-                // },
                  check_rivel_black_words (alias, value) {
                     var rival_black_words = []
+                    var self = this
+                    var temp_arr;
 
                      var getDoc = this.ref_db.get()
                           .then(doc => {
@@ -264,7 +276,7 @@ export default {
                               
                               var player_one_alias = doc.data().alias_player_one
                               var player_two_alias = doc.data().alias_player_two
-                              var temp_arr;
+                              
                              
                              // get_rivel_blue_words
                               if (alias == player_two_alias)
@@ -272,34 +284,32 @@ export default {
                                 console.log("player_2: rival 1 black: ")
                                  console.log(doc.data().black_words_player_one)
                                 temp_arr = doc.data().black_words_player_one
-                                temp_arr.forEach( word => rival_black_words.push(word))
+                               
                               }
                               else
                               {
                                 console.log("player_1: rival 2 black: ")
                                 console.log(doc.data().black_words_player_two)
                                 temp_arr = doc.data().black_words_player_two
-                                temp_arr.forEach( word => rival_black_words.push(word))
                               }
 
                               if (temp_arr.includes(value))
                                 {
                                   console.log(value," in black words")
-                                  this.is_in_black_words = true
+                                  self.is_in_black_words = true
                                   
                                 } else {
                                   console.log(value," is not in black words")
-                                   this.is_in_black_words = false
+                                  self.is_in_black_words = false
                                 }
                            }
                           })
                           console.log("alias of player check black",alias)
-                          console.log("before check include in black words",rival_black_words)
-                          console.log("type of this.rival_black_word",typeof(rival_black_words))
+                          // console.log("before check include in black words",rival_black_words)
+                          // console.log("type of this.rival_black_word",typeof(rival_black_words))
                           console.log("word value",value)
 
-
-                          // if (rival_black_words.includes(value))
+                          // if (this.is_in_black_words)
                           // {
                           //   console.log(value," in black words")
                           //   return true
@@ -310,6 +320,14 @@ export default {
                           // }
                           
 
+
+                }, init_is_in_black_words (boolean) {
+
+                  if (boolean) {
+                    this.is_in_black_words = true
+                  } else {
+                    this.is_in_black_words = false
+                  }
 
                 },
                     remove_from_rivel_blue_words (value) {

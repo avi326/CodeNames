@@ -21,6 +21,8 @@
             <td v-else> {{ game.player2 }} </td>
             <td class="play_now">  {{ game.countPlayers }} </td>
             <td> <i class="material-icons delete" @click="deleteGame(game.id)">delete</i> </td>
+            <td v-if="game.player2 == alias || game.player1 == alias" > <router-link :to="{ name: 'Game', params: {player_one_alias: game.player1 , player_two_alias: alias , conected_player: alias}}"> Resume game </router-link> </td>
+
           </tr>
           <tr>
              <td><NewGame :alias="alias"/></td>
