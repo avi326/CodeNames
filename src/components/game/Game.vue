@@ -1,7 +1,9 @@
 <template>
     <div class="game">
-
-        <div> 
+    <b-container class="bv-example-row">
+    <b-row>
+        <b-col>
+            <div> 
             <p> {{ player_one_alias }}  שחקן 1 </p>
             <p  v-if="player_one_count_moves"> {{ player_one_count_moves }}   תור:  </p>
             <p> נגד </p>
@@ -12,39 +14,38 @@
                 <form class="endGame" @submit.prevent="end_game">
                 <button class="btn deep-purple">סיים-משחק! </button>
                 </form>
-        <div>
+            </div>
+        </b-col>
+    </b-row>
 
-        </div>
+    <b-row>
+        <b-col>
 
-        </div>
-        <div style="text-align: center; width: 65%; overflow: hidden;">
-            <div style="width: 400px;  float: left;">
-             
              <GameMoves v-if="turn" :startTurn="turn"  :ref_db="ref" :conected_player="conected_player"/>
              <GameMoves v-else :ref_db="ref" :conected_player="conected_player"/>
-            </div>
-
-            <div style="width: 600px; float: left;">
+        </b-col>
+        <b-col>
             <h3 class="lead text-center"> לוח מילים</h3>
             <table class="table table-bordered text-center words">
                 <tbody>
 
                     <tr v-for="i in Math.ceil(table_board.length / 5)" :key="i">
-                        <td v-for="word in table_board.slice((i - 1) * 5, i * 5)" :key="word.id">
+                        <td v-for="word in table_board.slice((i - 1) * 5, i * 5)" :key="word.id" :name="word">
                              {{ word }} 
                              </td>
                     </tr>
                 </tbody>
             </table>
-            </div>
-            <div style="margin-left: 50px;">
+        </b-col>
+        <b-col>
              <GameChat v-if="player_one_alias!=null" :name="player_one_alias" :ref_db="ref" />
              <GameChat v-else :name="player_two_alias" :ref_db="ref"/>
-            </div>
-
-        </div>
-
-            <div class="mapTable">
+        </b-col>
+    </b-row>
+        
+    <b-row>
+        <b-col>
+                <div class="mapTable">
                 <h3 class="lead text-center">מפת המשחק שלך</h3>
                 <table style="width:15%" class="table table-bordered mapTable">
                     <tr v-for="i in Math.ceil(map_player.length / 5)" :key="i">
@@ -54,7 +55,16 @@
 
                 </table>
             </div>
-        </div>
+        </b-col>
+    </b-row>
+    </b-container>
+
+
+    </div>
+
+
+
+
 
 </template>
 
@@ -113,6 +123,8 @@ created () {
             if (this.player_two_alias)
             {
                 this.map_player = doc.data().map_player_two
+
+
                 
                 //TODO: Need to get the currect doc and update it
                 db.collection('table_of_players').doc(this.player_one_alias).set({                    
@@ -128,6 +140,12 @@ created () {
             {
                 this.map_player = doc.data().map_player_one
             }
+            // init color of td by map_player
+            //     this.map_player.forEach( blue_word => {
+            //         //document.getElementById(blue_word).className = "table_board_td_blue";
+            //         console.log(document.getElementById(blue_word).className)
+            // })
+
 
             // we init turn to player 1
             if (this.turn==this.player_one_alias) {
@@ -271,8 +289,8 @@ methods: {
 
                var blue_words_player_one = doc.data().blue_words_player_one
                var blue_words_player_two = doc.data().blue_words_player_two
-               console.log("blue word check end game one: ", blue_words_player_one)
-               console.log("blue word check end game two : ", blue_words_player_two)
+               //console.log("blue word check end game one: ", blue_words_player_one)
+               //console.log("blue word check end game two : ", blue_words_player_two)
 
                if (blue_words_player_one.length == 0  && blue_words_player_two.length == 0 )
                {
@@ -356,5 +374,12 @@ div.MultiSelectWords {
     margin-right:auto;
     text-align: center;
     width: 300px;
+}
+
+.table_board_td_blue { 
+    float:left;
+    width: 100%;
+    padding-bottom: 100%; /* = width for a 1:1 aspect ratio */
+    background-color: rgb(0, 119, 255);
 }
 </style>
