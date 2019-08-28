@@ -1,54 +1,56 @@
 <template>
-    <div class="game">
+    <b-container>
+        <b-row>
+            
+            <b-col>
+                <div> 
+                    <p> {{ player_one_alias }}  שחקן 1 </p>
+                    <p> נגד </p>
+                    <p> {{ player_two_alias }}  שחקן 2 </p>
+                </div>
+            </b-col>
 
-        <div> 
-            <p> {{ player_one_alias }}  שחקן 1 </p>
-            <p> נגד </p>
-            <p> {{ player_two_alias }}  שחקן 2 </p>
-        <div>
-            {{ number_check }}
+            <b-col>
+                <div style="text-align: center; width: 65%; overflow: hidden;">
+                    <div style="width: 600px; float: left;">
+                        <h3 class="lead text-center"> לוח מילים</h3>
+                        <table class="table table-bordered text-center words">
+                            <tbody>
 
+                                <tr v-for="i in Math.ceil(table_board.length / 5)" :key="i">
+                                    <td v-for="word in table_board.slice((i - 1) * 5, i * 5)" :key="word.id">
+                                        {{ word }} 
+                                        </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-        </div>
+                    <div style="width: 400px;  float: left;">
+                    <GameMoves v-if="turn" :startTurn="turn" :ref_db="ref"/>
+                    <GameMoves v-else :ref_db="ref"/>
+                    </div>
+                </div>
+            </b-col>
 
-        </div>
-        <div style="text-align: center; width: 65%; overflow: hidden;">
-            <div style="width: 400px;  float: left;">
-             <GameMoves v-if="turn" :startTurn="turn" :ref_db="ref"/>
-             <GameMoves v-else :ref_db="ref"/>
-            </div>
+            <b-col>         
+                <div class="mapTable">
+                    <h3 class="lead text-center">מפת המשחק שלך</h3>
+                    <table style="width:15%" class="table table-bordered mapTable">
+                        <tr v-for="i in Math.ceil(map_player.length / 5)" :key="i">
+                        <td  v-for="cell in map_player.slice((i - 1) * 5, i * 5)" :key="cell.id" :class="cell">
+                            </td>
+                        </tr>
 
-            <div style="width: 600px; float: left;">
-            <h3 class="lead text-center"> לוח מילים</h3>
-            <table class="table table-bordered text-center words">
-                <tbody>
-
-                    <tr v-for="i in Math.ceil(table_board.length / 5)" :key="i">
-                        <td v-for="word in table_board.slice((i - 1) * 5, i * 5)" :key="word.id">
-                             {{ word }} 
-                             </td>
-                    </tr>
-                </tbody>
-            </table>
-            </div>
-            <div style="margin-left: 50px;">
-             <GameChat v-if="player_one_alias!=null" :name="player_one_alias" :ref_db="ref"/>
-             <GameChat v-else :name="player_two_alias" :ref_db="ref"/>
-            </div>
-
-        </div>
-
-            <div class="mapTable">
-                <h3 class="lead text-center">מפת המשחק שלך</h3>
-                <table style="width:15%" class="table table-bordered mapTable">
-                    <tr v-for="i in Math.ceil(map_player.length / 5)" :key="i">
-                    <td  v-for="cell in map_player.slice((i - 1) * 5, i * 5)" :key="cell.id" :class="cell">
-                        </td>
-                    </tr>
-
-                </table>
-            </div>
-        </div>
+                    </table>
+                </div>
+                <div class="margin-top: 50px">
+                    <GameChat v-if="player_one_alias!=null" :name="player_one_alias" :ref_db="ref"/>
+                    <GameChat v-else :name="player_two_alias" :ref_db="ref"/>
+                </div>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
