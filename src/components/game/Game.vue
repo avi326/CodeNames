@@ -9,7 +9,6 @@
             <p  v-if="player_two_count_moves"> {{ player_two_count_moves }}   תור:  </p>
 
              <p v-if="count_moves">  {{ count_moves }}  מספר מהלכים כולל עד כה</p>
-
         <div>
 
         </div>
@@ -18,8 +17,8 @@
         <div style="text-align: center; width: 65%; overflow: hidden;">
             <div style="width: 400px;  float: left;">
              
-             <GameMoves v-if="turn" :startTurn="turn"  :ref_db="ref"/>
-             <GameMoves v-else :ref_db="ref"/>
+             <GameMoves v-if="turn" :startTurn="turn"  :ref_db="ref" :conected_player="conected_player"/>
+             <GameMoves v-else :ref_db="ref" :conected_player="conected_player"/>
             </div>
 
             <div style="width: 600px; float: left;">
@@ -36,7 +35,7 @@
             </table>
             </div>
             <div style="margin-left: 50px;">
-             <GameChat v-if="player_one_alias!=null" :name="player_one_alias" :ref_db="ref"/>
+             <GameChat v-if="player_one_alias!=null" :name="player_one_alias" :ref_db="ref" />
              <GameChat v-else :name="player_two_alias" :ref_db="ref"/>
             </div>
 
@@ -62,7 +61,7 @@ import db from '@/firebase/init'
 
 export default {
 name: 'Game',
-props: ['player_one_alias','player_two_alias','turn'], 
+props: ['player_one_alias','player_two_alias','turn','conected_player'], 
 data () {
     return {
         table_board: [],
@@ -205,9 +204,7 @@ methods: {
 
         var ref = this.ref
             .onSnapshot(doc => {
-                            console.log("numMoves firebase: ",doc.data().num_of_moves)
                             this.count_moves = doc.data().num_of_moves
-                            console.log(" this.count_moves: ", this.count_moves)
 
                             // count moves for each player
                             this.player_one_count_moves =  Math.floor(this.count_moves/2) + 1
@@ -219,7 +216,7 @@ methods: {
     },
     check_game_over () {
 
-        if (this.count_moves==2) {
+        if (this.count_moves==12) {
             this.$destroy()
         }
     

@@ -127,6 +127,7 @@ export default {
                 words: list_of_words,
                 words_right_guess: null, // kind of temp array, for checking == 'words' array.
                 words_worng_guess: null, // when guess worng word, add to this array.
+                player_worng_guess: null, // when guess worng word, save the player
                 timestamp: Date.now()
                 }).catch(err => {
                 console.log(err)
@@ -148,11 +149,9 @@ export default {
                               var num_of_moves = doc.data().num_of_moves
                               num_of_moves += 1
 
-                                console.log("mnum_of_moves: ", doc.data().num_of_moves)
                                 this.ref_db.update({
                                 num_of_moves: num_of_moves
                               })
-                              console.log("mnum_of_moves (after increase): ", doc.data().num_of_moves)
                               
                           } 
                       })

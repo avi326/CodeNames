@@ -17,7 +17,7 @@
         <tbody>
           <tr v-for="game in games" :key="game.id">
             <td> {{ game.player1 }} </td>
-            <td v-if="game.player2==''"> <router-link :to="{ name: 'Game', params: {player_one_alias: game.player1 , player_two_alias: alias }}"> Join!  </router-link> </td>
+            <td v-if="game.player2==''"> <router-link :to="{ name: 'Game', params: {player_one_alias: game.player1 , player_two_alias: alias , conected_player: alias}}"> Join!  </router-link> </td>
             <td v-else> {{ game.player2 }} </td>
             <td class="play_now">  {{ game.countPlayers }} </td>
             <td> <i class="material-icons delete" @click="deleteGame(game.id)">delete</i> </td>

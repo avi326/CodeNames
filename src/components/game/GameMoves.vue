@@ -3,11 +3,11 @@
 
     <div v-if="turn">
       <b-card>
-         
-      <div v-if="need_to_fix">
+      <!-- <div v-if="need_to_fix">
         <p>  תקן את הניחוש הקודם שלך</p>
-      </div>
-      <div v-if="need_to_guess"> 
+        <FixGuess :ref_db="ref_db" :move_doc_id="need_to_fix"/>
+      </div> -->
+      <div v-if="need_to_guess ">  <!-- && !need_to_fix -->
         <p> נחש את ההגדרה הנוכחית</p>
             <GuessDefine :ref_db="ref_db"/>
       </div>
@@ -58,20 +58,25 @@
 <script>
 import MultiSelectWords from '@/components/game/MultiSelectWords'
 import GuessDefine from '@/components/game/GuessDefine'
+import FixGuess from '@/components/game/FixGuess'
 import db from '@/firebase/init'
 import moment from 'moment'
+import firebase from 'firebase'
 
 export default {
   name: 'GameMoves',
   props:{ startTurn: String,
-          ref_db: Object
+          ref_db: Object,
+          conected_player: String
         },
   components: {
     MultiSelectWords,
-    GuessDefine
+    GuessDefine,
+    FixGuess
   },
   data(){
     return{
+      alias: null,
       moves: [],
       turn: null,
       need_to_fix: null,
@@ -81,11 +86,15 @@ export default {
       words_right_guess: null,
       words_worng_guess: null
       
+      
     }
   },created () {
+    this.init_user_alias()
     this.turn = this.startTurn
   },
   mounted(){
+    // check if need to fix the last turn
+     this.check_if_need_fix ()
     // the control in moves 
     var ref = this.ref_db.collection('moves').orderBy('timestamp');
     
@@ -108,7 +117,19 @@ export default {
             }
             
 
-        }
+        } 
+        // else if (change.type="modified") {
+        //   let doc = change.doc
+        //   var check_worng = doc.data().words_worng_guess
+        //   console.log("check worng", doc.data().words_worng_guess)
+        //   if (check_worng == null)
+        //   {
+        //     this.need_to_fix = null
+        //   }  else {
+        //     this.need_to_fix = doc.id
+        //   }
+
+        // }
       })
     })
     this.check_my_guess() // for the player that guess.
@@ -152,13 +173,13 @@ export default {
               var ref = this.ref_db.collection('moves').orderBy('timestamp')
                 ref.onSnapshot(snapshot => {
                 snapshot.docChanges().forEach(change => {
-                    console.log(change)
+                    //console.log(change)
                     if(change.type == 'modified'){
                     let doc = change.doc
                     this.words = doc.data().words
                     this.words_right_guess = doc.data().words_right_guess
                     this.words_worng_guess = doc.data().words_worng_guess
-                    if (this.words_worng_guess) {
+                    if (this.words_worng_guess) { //  && !this.need_to_fix
                         console.log("my guess is worng",this.words_worng_guess)
                         this.need_to_guess=false
                     } else if (this.words.length == this.words_right_guess.length) {
@@ -177,7 +198,7 @@ check_rival_guess () {
       var ref = this.ref_db.collection('moves').orderBy('timestamp')
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        console.log(change)
+        //console.log(change)
         if(change.type == 'modified'){
           let doc = change.doc
           this.words_worng_guess = doc.data().words_worng_guess
@@ -191,6 +212,54 @@ check_rival_guess () {
     })
 
 },
+                check_if_need_fix () {
+                  var self = this;
+                  console.log("alias need to fix: ", this.alias)
+                  var ref = this.ref_db.collection("moves").where("player_worng_guess", "==", this.conected_player)
+                  .onSnapshot(
+
+                      function(querySnapshot) {
+                        console.log("querySnapshot to fix: ", querySnapshot)
+                        
+
+                        if (querySnapshot.empty) {
+                          self.need_to_fix = null
+                      } else {
+                          querySnapshot.forEach(function(doc) {
+                          console.log("move to fix:", doc)
+                          self.need_to_fix = doc.id
+                        });
+                        
+                      }
+
+
+
+
+                    })
+                },
+
+                init_user_alias() {
+                    let user = firebase.auth().currentUser;
+
+                    //console.log(user)
+
+                    if(user){
+                        db.collection('users').where('user_id', '==', user.uid).get()
+                          .then(snapshot => {
+                            snapshot.forEach((doc) => {
+                             this.alias = doc.id
+                             console.log(" this.alias in get_user_alias: ",this.alias)
+                            })
+                          }).then(() => {
+
+
+                          }).catch( (err) => {console.log(err)}
+
+                          )
+                          } else {
+                            console.log("error: no user connected")
+                        }
+                },
 
   }
 }
