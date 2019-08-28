@@ -88,7 +88,6 @@ export default {
 
 
                 // console.log(temp_options);
-
                 var i = 0
                 temp_options.forEach( (element) => {
                   this.options.push({name: element, code: i++})

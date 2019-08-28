@@ -261,6 +261,26 @@ methods: {
 
         if (this.count_moves==12) {
             this.$destroy()
+        } else  {
+        this.ref
+        .get()
+        .then(doc => {
+            if (!doc.exists) {
+            console.log('No such document!');
+            } else {
+
+               var blue_words_player_one = doc.data().blue_words_player_one
+               var blue_words_player_two = doc.data().blue_words_player_two
+               console.log("blue word check end game one: ", blue_words_player_one)
+               console.log("blue word check end game two : ", blue_words_player_two)
+
+               if (blue_words_player_one.length == 0  && blue_words_player_two.length == 0 )
+               {
+                    this.$destroy()
+               }
+
+            } 
+        })
         }
 },
     end_game () {

@@ -16,7 +16,31 @@ export default {
   data(){
     return{
       newGame: null,
+      words_list: []
+
     }
+  },
+  created () {
+
+         
+    var getDoc = db.collection("words").doc("test_group");
+    getDoc.get()
+    .then(doc => {
+        var temp_words;
+        if (!doc.exists) {
+        console.log('No table_board!');
+        } else {
+                temp_words = doc.data().words_list
+                temp_words.forEach( (element) => {
+                  this.words_list.push(element)
+        })
+        }
+    })
+    .catch(err => {
+        console.log('Error getting document', err);
+    });
+
+
   },
   methods: {
     addGame()
@@ -46,10 +70,8 @@ export default {
           })
 
           this.newGame = null
-
-          //let words = db.collection('words').doc('test_group').get('50array')
-          var words = ["גבוה","נשיא","עולם","אדמה","תרנגול","פצצה","רמקול","אש","ירושלים","יד","סרטן","כנף","תקרה","ארוחה","כוכב","חזק","איראן","גרגיר","משחק","דשא","עציץ","כדור","עט","חם","דף","אש","ארנק","מחשב","מכנס","חולצה","מראה","מדף","מזגן","שלט","קיר","צבע","כבל","מטען","מפה","סיכה","רעש","גלגל","אבק","קרש","בטריה","ספר","אות","קר","חם","מושב","עיר"]
-
+          
+          var words = this.words_list
           var randomCell;
           var tableBoard = new Array();
           var black_list_one = new Array();

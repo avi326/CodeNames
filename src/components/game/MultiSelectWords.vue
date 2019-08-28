@@ -100,8 +100,10 @@ export default {
             });
 
 
-            db.collection('groupofwords').doc(this.defineWord).set({
-            wordsArray: list_of_words
+            var list_of_words_to_obj = Object.assign({}, list_of_words);
+
+            db.collection('word_data').doc(this.defineWord).set({
+           groups_array: firebase.firestore.FieldValue.arrayUnion(list_of_words_to_obj)
             },{ merge: true }).catch(err => {
             console.log(err)
             })
