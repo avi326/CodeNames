@@ -84,7 +84,8 @@ export default {
       define_word: null,
       words: null,
       words_right_guess: null,
-      words_worng_guess: null
+      words_worng_guess: null,
+      player_pass_guess: null
       
       
     }
@@ -179,14 +180,17 @@ export default {
                     this.words = doc.data().words
                     this.words_right_guess = doc.data().words_right_guess
                     this.words_worng_guess = doc.data().words_worng_guess
+                    this.player_pass_guess = doc.data().player_pass_guess
                     if (this.words_worng_guess) { //  && !this.need_to_fix
                         console.log("my guess is worng",this.words_worng_guess)
                         this.need_to_guess=false
-                    } else if (this.words.length == this.words_right_guess.length) {
+                    } else if (this.words_right_guess && this.words.length == this.words_right_guess.length) {
                         console.log("OMG! complete guess!",this.words_right_guess.length)
                         this.need_to_guess=false
+                    } else if (this.player_pass_guess) {
+                      this.need_to_guess=false
                     }
-                    }
+                  }
                 })
     })
 

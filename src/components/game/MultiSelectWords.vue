@@ -130,6 +130,7 @@ export default {
                 words_right_guess: null, // kind of temp array, for checking == 'words' array.
                 words_worng_guess: null, // when guess worng word, add to this array.
                 player_worng_guess: null, // when guess worng word, save the player
+                player_pass_guess: null, // when player dont know the guess, and want pass
                 timestamp: Date.now()
                 }).catch(err => {
                 console.log(err)

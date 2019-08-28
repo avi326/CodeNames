@@ -23,7 +23,11 @@
         </div>
         <div class="field center">
           <button class="btn  light-blue lighten-2">נחש! </button>
+           <p>  בחר מילים מתאימות. אם אינך יודע אתה יכול ללחוץ למטה:  </p>
         </div>
+          </form>
+          <form class="card-panel" @submit.prevent="passGuess">
+          <button class="btn  light-blue lighten-2"> לא-יודע</button>
           </form>
 
         <div>
@@ -141,6 +145,13 @@ export default {
           updateValue (value) {
             this.value = value
             console.log("value: ",  this.value)
+          },
+          passGuess () {
+             var ref_moves = this.ref_db.collection('moves').doc(this.doc_id)
+                    ref_moves.update({
+                    player_pass_guess: this.alias
+                });
+
           },
           sendGuess(){
               var ref_moves = this.ref_db.collection('moves').doc(this.doc_id)
