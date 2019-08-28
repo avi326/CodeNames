@@ -195,7 +195,7 @@ export default {
                               var player_two_alias = doc.data().alias_player_two
                               
                              
-                             // get_rivel_blue_words
+                             // get_rivel_black_words
                               if (this.alias == player_two_alias)
                               {
                                 console.log("player_2: rival 1 black: ")

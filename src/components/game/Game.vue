@@ -19,6 +19,7 @@
               <h5> 
                     <p v-if="count_moves">  {{ count_moves }}  מספר מהלכים כולל עד כה</p> 
                     <p v-if="count_moves=='8'">  המשחק מסתיים בקרוב... </p> 
+                    <p v-if="count_moves=='10'">  תור אחרון לכל אחד!  </p> 
               </h5>
               <b-progress :value="count_moves" :max="12" show-value></b-progress>
             </div>
@@ -285,7 +286,6 @@ methods: {
     check_game_over () {
 
         if (this.count_moves==12) {
-              window.alert("נגמרו לכם התורות. המשחק הסתיים!  ");
             this.$destroy()
         } else  {
         this.ref
