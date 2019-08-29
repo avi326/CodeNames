@@ -1,16 +1,20 @@
 <template>
     <div class="chat">
-        <h2> chat </h2>
+              <h4 style="text-align: center;" > נשמח לשמוע על באגים, הצעות לשיפור, או כל דבר אחר  </h4>
             <b-card>
-                <ul class="messages" v-chat-scroll> <!-- print all message -->
-                <li v-for="message in messages" :key="message.id">
+                <ul class="messages" style="text-align: right;" v-chat-scroll> <!-- print all message -->
+                <li v-for="message in messages" :key="message.id" >
                     <span class="name">{{ message.name }}</span>
                     <span class="content">{{ message.content }}</span>
                     <span class="time">{{ message.timestamp }}</span>
                 </li>
                 </ul>
+            </b-card>
+            <b-card>
+
                  <NewMessage :name="name"/>
             </b-card>
+
             
     </div>
 
@@ -55,8 +59,19 @@ export default {
 </script>
 
 <style scoped>
+html {
+  direction: rtl;
+  text-align: right;
+}
 span.name {
-font-size: 20px
+color: rgb(138, 131, 42);
+font-size: 10px
+}
+
+span.content {
+font-size: 15px;
+color: rgb(76, 77, 24);
+font-style: inherit
 }
 
 span.time {

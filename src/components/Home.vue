@@ -1,6 +1,21 @@
 <template>
   <div class="home">
-  <h1> home </h1>
+
+    <b-container class="bv-example-row">
+      <b-row>
+        <b-col></b-col>
+        <b-col>
+
+            <h3 style="direction: rtl; text-align: right; ">  ברוכים הבאים למשחק שם קוד! </h3>
+            <p style="direction: rtl; text-align: right; ">
+              מוזמנים לשחק. 
+              </p>
+
+
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+</b-container>
   </div>
 </template>
 

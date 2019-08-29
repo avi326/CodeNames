@@ -9,8 +9,8 @@
       <b-row  class="justify-content-md-center">
         <b-col md="auto">
           <p v-if="alias">hello {{ alias }} </p>
-          <p v-else> hello guest, please <router-link :to="{ name: 'Signup'}"> signup here </router-link> or <router-link :to="{ name: 'Login'}">
-             login 
+          <p v-else> שלום אורח, בבקשה <router-link :to="{ name: 'Signup'}"> הירשם  </router-link> או <router-link :to="{ name: 'Login'}">
+            התחבר 
             <i class="fa fa-header" aria-hidden="true"></i> </router-link>  </p>
         </b-col>
       </b-row>
@@ -19,9 +19,9 @@
             <table v-if="alias">
               <thead>
                 <tr>
-                    <th>player1</th>
-                    <th>player2</th>
-                    <th>count players</th>
+                    <th>שחקן ראשון </th>
+                    <th>שחקן שני</th>
+                    <th>מספר השחקנים כרגע</th>
                 </tr>
               </thead>
 

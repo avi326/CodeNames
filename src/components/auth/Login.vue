@@ -1,18 +1,18 @@
 <template>
   <div class="login container">
     <form class="card-panel" @submit.prevent="login">
-      <h2 class="center deep-purple-text">Login</h2>
+      <h2 class="center deep-purple-text"></h2>
       <div class="field">
-        <label for="email">Email</label>
+        <label for="email">אימייל</label>
         <input id="email" type="email" v-model="email">
       </div>
       <div class="field">
-        <label for="password">Password</label>
+        <label for="password">סיסמא</label>
         <input id="password" type="password" v-model="password">
       </div>
       <p v-if="feedback" class="red-text center">{{ feedback }}</p>
       <div class="field center">
-        <button class="btn deep-purple">Login</button>
+        <button class="btn deep-purple">התחבר</button>
       </div>
     </form>
   </div>

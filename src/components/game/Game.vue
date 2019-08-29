@@ -4,15 +4,15 @@
     <b-row>
         <b-col cols="1"  align-self="center">
                 <form class="endGame" @submit.prevent="end_game">
-                <button class="btn red ">סיים-משחק! </button>
+                <button class="btn deep-orange lighten-2">סיים-משחק! </button>
                 </form>
         </b-col>
         <b-col>
             <div> 
-            <p  v-if="player_one"> {{ player_one }}  שחקן 1 </p>
+            <h4  v-if="player_one"> {{ player_one }} </h4>
             <!-- <p  v-if="player_one_count_moves"> {{ player_one_count_moves }}   תור:  </p> -->
             <p> נגד </p>
-            <p  v-if="player_two"> {{ player_two }}  שחקן 2 </p>
+            <h4  v-if="player_two"> {{ player_two }}</h4>
             <!-- <p  v-if="player_two_count_moves"> {{ player_two_count_moves }}   תור:  </p> -->
 
             
@@ -22,7 +22,7 @@
                     <p v-if="count_moves=='8'">  המשחק מסתיים בקרוב... </p> 
                     <p v-if="count_moves=='10'">  תור אחרון לכל אחד!  </p> 
               </h5>
-                <b-progress :value="0" :max="12" class="mb-3">
+                <b-progress :value="0" :max="12" class="mb-3" animated>
                    <b-progress-bar v-if="count_moves>0"  :value="1" variant="success"></b-progress-bar>
                    <b-progress-bar v-if="count_moves>1" :value="1" variant="danger"></b-progress-bar>
                    <b-progress-bar v-if="count_moves>2"  :value="1" variant="success"></b-progress-bar>
@@ -53,13 +53,14 @@
              </b-card>
         </b-col>      
         <b-col>
-            <h3 class="lead text-center"> לוח מילים</h3>
+            <h3> לוח מילים</h3>
             <table class="table table-bordered text-center words">
                 <tbody>
 
-                    <tr v-for="i in Math.ceil(table_board.length / 5)" :key="i">
-                        <td v-for="word in table_board.slice((i - 1) * 5, i * 5)" :key="word.id" :name="word">
-                             {{ word }} 
+                    <tr v-for="(i, index_i) in Math.ceil(table_board.length / 5)" :key="i">
+                        <td v-for="(word, index_j) in table_board.slice((i - 1) * 5, i * 5)" :key="word.id" :class="map_player[(index_i * 5 ) + index_j]">
+                           <span v-if="map_player[(index_i * 5 ) + index_j]=='black'" style="color: white;"> <b> {{ word }}  </b> </span>
+                           <span v-else> <b> {{ word }}  </b> </span>
                              </td>
                     </tr>
                 </tbody>
@@ -71,11 +72,11 @@
         </b-col>
     </b-row>
         
-    <b-row>
+    <!-- <b-row>
         <b-col>
                 <div class="mapTable">
                 <h3 class="lead text-center">מפת המשחק שלך</h3>
-                <table style="width:15%" class="table table-bordered mapTable">
+                <table style="width:15%" class="mapTable table-bordered">
                     <tr v-for="i in Math.ceil(map_player.length / 5)" :key="i">
                     <td  v-for="cell in map_player.slice((i - 1) * 5, i * 5)" :key="cell.id" :class="cell">
                         </td>
@@ -84,7 +85,7 @@
                 </table>
             </div>
         </b-col>
-    </b-row>
+    </b-row> -->
     </b-container>
 
 
@@ -410,30 +411,40 @@ table.mapTable {
     width: 10%;
     border-collapse: collapse;
     border: 1px solid black;
-    background-color: rgb(221, 253, 255);
-    margin: 0px auto;
 }
 
 table.mapTable.td {
     float:left;
+    text-align: center;
+    border: 1px solid black;
     width: 100%;
     padding-bottom: 100%; /* = width for a 1:1 aspect ratio */
-    background-color: rgb(221, 200, 200);
+    background-color: rgb(235, 201, 187);
 }
 
 table.mapTable.td.blue {
     float:left;
+    text-align: center;
+    border: 1px solid black;
     width: 100%;
     padding-bottom: 100%; /* = width for a 1:1 aspect ratio */
     background-color: rgb(0, 119, 255);
 }
 
 table.mapTable.td.black {
+    color: white;
+    text-align: center;
     float:left;
+    border: 1px solid black;
     width: 100%;
     padding-bottom: 100%; /* = width for a 1:1 aspect ratio */
     background-color: rgb(0, 0, 0);
 }
+
+table.mapTable.td.black.p {
+    color: white;
+}
+
 
 div.MultiSelectWords {
     margin-left:auto; 
@@ -451,4 +462,5 @@ div.MultiSelectWords {
 #container p { 
     display: inline
      }
+
 </style>

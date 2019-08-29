@@ -1,9 +1,12 @@
 <template>
     <div class="new-message">
     <form @submit.prevent="addMessage">
-      <label for="new-message">New message (enter to add):</label>
-      <input type="text" name="new-message" v-model="newMessage">
+       <label for="new-message">שמך</label>
+      <input type="text" name="new-message" placeholder="שם פרטי" v-model="name">
+      <label for="new-message"> אפשר לכתוב כאן</label>
+      <input type="text" name="new-message"   placeholder="כתוב בבקשה..." v-model="newMessage">
       <p v-if="feedback">{{ feedback }}</p>
+       <button class="btn teal lighten-2">  שלח</button>  
     </form>
     </div>
 </template>
@@ -12,16 +15,16 @@
 import db from '@/firebase/init'
 export default {
   name: 'NewMessage',
-  props: ['name'],
   data(){
     return{
       newMessage: null,
-      feedback: null
+      feedback: null,
+      name: null
     }
   },
   methods: {
     addMessage(){
-      if(this.newMessage){
+      if(this.newMessage && this.name){
         db.collection('messages').add({
           content: this.newMessage,
           name: this.name,
@@ -32,7 +35,7 @@ export default {
         this.newMessage = null
         this.feedback = null
       } else {
-        this.feedback = 'You must enter a message in order to send one'
+        this.feedback = 'חייב להזין שם ותוכן'
       }
     }
   }

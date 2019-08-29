@@ -5,9 +5,8 @@
       <b-card>
           <b-spinner small  variant="success" type="grow"></b-spinner>
           <circular-count-down-timer
-        :initial-value="180"
+        :initial-value="clock_time"
         :stroke-width="5"
-        :underneath-stroke-color="'lightgrey'"
         :seconds-fill-color="'#D3FFE6'"
         :minutes-fill-color="'#ACE7C5'"
         :size="80"
@@ -55,7 +54,6 @@
                   <circular-count-down-timer
                 :initial-value="180"
                 :stroke-width="5"
-                :underneath-stroke-color="'lightgrey'"
                 :seconds-fill-color="'#D3FFE6'"
                 :minutes-fill-color="'#ACE7C5'"
                 :size="80"
@@ -123,7 +121,8 @@ export default {
       words: null,
       words_right_guess: null,
       words_worng_guess: null,
-      player_pass_guess: null
+      player_pass_guess: null,
+      clock_time: 180
       
       
     }
@@ -196,6 +195,9 @@ export default {
         setAppGetData (data) {
           this.define_word = data
         },
+          updated_clock: (status) => {
+              this.clock_time = 180
+          },
 
         replaceTurn () {
 
@@ -206,6 +208,8 @@ export default {
           } else {
             this.turn = true
           }
+
+          this.updated_clock()
     },
     play_the_turn() {
 

@@ -1,17 +1,17 @@
 <template>
   <div class="signup container">
     <form class="card-panel" @submit.prevent="signup">
-      <h2 class="center deep-purple-text">Signup</h2>
+      <h2 class="center deep-purple-text">הרשמה</h2>
       <div class="field">
-        <label for="email">Email</label>
+        <label for="email">אימייל</label>
         <input id="email" type="email" v-model="email">
       </div>
       <div class="field">
-        <label for="password">Password</label>
+        <label for="password">סיסמא</label>
         <input id="password" type="password" v-model="password">
       </div>
       <div class="field">
-        <label for="name">Alias</label>
+        <label for="name">כינוי</label>
         <input id="name" type="text" v-model="alias">
       </div>
       <p v-if="feedback" class="red-text center">{{ feedback }}</p>
