@@ -80,8 +80,6 @@
 import GameChat from '@/components/game/GameChat'
 import GameMoves from '@/components/game/GameMoves'
 import db from '@/firebase/init'
-//import VuetifyConfirm from 'vuetify-confirm'
-
 
 export default {
 name: 'Game',
@@ -302,7 +300,9 @@ methods: {
 
                if (blue_words_player_one.length == 0  && blue_words_player_two.length == 0 )
                {
-                   window.alert("סיימתם את המשחק בהצלחה! ");
+                    this.$dialog.alert('סיימתם את המשחק בהצלחה!  ').then(dialog => {
+                    console.log('Closed');
+                });
                     this.$destroy()
                }
 
@@ -313,7 +313,10 @@ methods: {
     end_game () {
 
         // change this.count to 12 for end the game
-          window.alert("בחרתם לסיים את המשחק. תודה רבה! ");
+         this.$dialog.alert('בחרתם לסיים את המשחק. תודה רבה! ').then(dialog => {
+            console.log('Closed');
+        });
+
             this.ref.update({
                     num_of_moves: 12
                 })
@@ -321,12 +324,23 @@ methods: {
     }
 
 
-  }
+  },
+        beforeRouteLeave (to, from, next) {
+        console.log("beforeRouteLeave")
+        this.$dialog.confirm('אתה מעוניין לסיים את המשחק?')
+        .then(function () {
+            next();
+        })
+        .catch(function () {
+            next(false);
+        });
+    }
 }
 
 </script>
 
-<style>
+<style scoped>
+
 div.game {
     direction: rtl;
     text-align: center

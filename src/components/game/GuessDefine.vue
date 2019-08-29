@@ -214,7 +214,10 @@ export default {
                                 {
                                 console.log(this.value.name," in black words")
                                 console.log("you choose black word, game over.")
-                                window.alert("נבחרה מילה שחורה של היריב. המשחק הסתיים!  ");
+                                this.$dialog.alert("נבחרה מילה שחורה של היריב. המשחק הסתיים!  ").then(dialog => {
+                                console.log('Closed');
+                            });
+      
                                this.game_over(this.value.name)
                                   
                                 } else {
