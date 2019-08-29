@@ -50,6 +50,25 @@
     <div v-else>
         <h3> מהלכים </h3>
             <b-card>
+              <h5> תור היריב לשחק...   </h5>
+              <p>  אתה יכול בנתיים להסתכל על הלוח ולתכנן את המהלך הבא! </p>
+                  <circular-count-down-timer
+                :initial-value="180"
+                :stroke-width="5"
+                :underneath-stroke-color="'lightgrey'"
+                :seconds-fill-color="'#D3FFE6'"
+                :minutes-fill-color="'#ACE7C5'"
+                :size="80"
+                :padding="4"
+                :minute-label="'דקות'"
+                :second-label="'שניות'"
+                :show-second="true"
+                :show-minute="true"
+                :show-hour="false"
+                :show-negatives="false"
+                :notify-every="'minute'"
+        ></circular-count-down-timer>
+
                 <ul class="messages" v-chat-scroll> <!-- print all message -->
                 <li v-for="move in moves" :key="move.id">
                     <span class="define">{{ move.define }}</span>

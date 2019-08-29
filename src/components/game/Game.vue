@@ -9,29 +9,49 @@
         </b-col>
         <b-col>
             <div> 
-            <p> {{ player_one_alias }}  שחקן 1 </p>
-            <p  v-if="player_one_count_moves"> {{ player_one_count_moves }}   תור:  </p>
+            <p  v-if="player_one"> {{ player_one }}  שחקן 1 </p>
+            <!-- <p  v-if="player_one_count_moves"> {{ player_one_count_moves }}   תור:  </p> -->
             <p> נגד </p>
-            <p> {{ player_two_alias }}  שחקן 2 </p>
-            <p  v-if="player_two_count_moves"> {{ player_two_count_moves }}   תור:  </p>
+            <p  v-if="player_two"> {{ player_two }}  שחקן 2 </p>
+            <!-- <p  v-if="player_two_count_moves"> {{ player_two_count_moves }}   תור:  </p> -->
 
             
               <h5> 
                     <p v-if="count_moves">  {{ count_moves }}  מספר מהלכים כולל עד כה</p> 
+                    <p v-else>  ברוכים הבאים! אפשר להתחיל...</p> 
                     <p v-if="count_moves=='8'">  המשחק מסתיים בקרוב... </p> 
                     <p v-if="count_moves=='10'">  תור אחרון לכל אחד!  </p> 
               </h5>
-              <b-progress :value="count_moves" :max="12" show-value></b-progress>
+                <b-progress :value="0" :max="12" class="mb-3">
+                   <b-progress-bar v-if="count_moves>0"  :value="1" variant="success"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>1" :value="1" variant="danger"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>2"  :value="1" variant="success"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>3" :value="1" variant="danger"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>4"  :value="1" variant="success"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>5" :value="1" variant="danger"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>6"  :value="1" variant="success"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>7" :value="1" variant="danger"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>8"  :value="1" variant="success"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>9" :value="1" variant="danger"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>10"  :value="1" variant="success"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>11" :value="1" variant="danger"></b-progress-bar>
+                   <b-progress-bar v-if="count_moves>12"  :value="1" variant="success"></b-progress-bar>               
+              </b-progress>
             </div>
         </b-col>
     </b-row>
 
     <b-row>
-        <b-col>
+        <b-col v-if="player_one && player_two">
 
              <GameMoves v-if="turn" :startTurn="turn"  :ref_db="ref" :conected_player="conected_player"/>
              <GameMoves v-else :ref_db="ref" :conected_player="conected_player"/>
         </b-col>
+        <b-col v-else>
+             <b-card>
+                <h5> ממתין לשחקן נוסף שיצטרף.  </h5>
+             </b-card>
+        </b-col>      
         <b-col>
             <h3 class="lead text-center"> לוח מילים</h3>
             <table class="table table-bordered text-center words">
@@ -92,8 +112,9 @@ data () {
         ref: null,
         count_moves: null,
         player_one_count_moves: null,
-        player_two_count_moves: null
-
+        player_two_count_moves: null,
+        player_one: null,
+        player_two: null
 
     }
 },
@@ -182,7 +203,8 @@ created () {
         }
 }, mounted () {
 
-    this.getNumOfMoves ()
+    this.getNumOfMoves()
+    this.get_alias_players()
 
 },
 destroyed () {
@@ -271,6 +293,7 @@ methods: {
             .onSnapshot(doc => {
                 if (doc.exists) {
                             this.count_moves = doc.data().num_of_moves
+                            this.moves.push("move")
 
                             // count moves for each player
                             this.player_one_count_moves =  Math.floor(this.count_moves/2) + 1
@@ -281,6 +304,17 @@ methods: {
             });
 
     },
+    get_alias_players () {
+
+    var ref = this.ref
+        .onSnapshot(doc => {
+            if (doc.exists) {
+                        this.player_one = doc.data().alias_player_one
+                        this.player_two = doc.data().alias_player_two
+            }
+        });
+
+},
     check_game_over () {
 
         if (this.count_moves==12) {
@@ -311,15 +345,22 @@ methods: {
         }
 },
     end_game () {
+        var self = this
 
         // change this.count to 12 for end the game
-         this.$dialog.alert('בחרתם לסיים את המשחק. תודה רבה! ').then(dialog => {
-            console.log('Closed');
+        console.log("beforeRouteLeave")
+        this.$dialog.confirm('אתה מעוניין לסיים את המשחק?')
+        .then(function () {
+            self.ref.update({
+                    num_of_moves: 12
+                })    
+            next('TableOfGames');
+        })
+        .catch(function () {
+            next(false);
         });
 
-            this.ref.update({
-                    num_of_moves: 12
-                })
+
        
     }
 
@@ -407,4 +448,7 @@ div.MultiSelectWords {
     padding-bottom: 100%; /* = width for a 1:1 aspect ratio */
     background-color: rgb(0, 119, 255);
 }
+#container p { 
+    display: inline
+     }
 </style>

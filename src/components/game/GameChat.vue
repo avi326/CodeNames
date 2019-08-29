@@ -1,6 +1,6 @@
 <template>
     <div class="chat">
-        <h2> צ'אט משחק </h2>
+        <h3> צ'אט משחק </h3>
             <b-card>
                 <ul class="messages" v-chat-scroll> <!-- print all message -->
                 <li v-for="message in messages" :key="message.id">
