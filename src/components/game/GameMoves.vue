@@ -4,6 +4,23 @@
     <div v-if="turn">
       <b-card>
           <b-spinner small  variant="success" type="grow"></b-spinner>
+          <circular-count-down-timer
+        :initial-value="180"
+        :stroke-width="5"
+        :underneath-stroke-color="'lightgrey'"
+        :seconds-fill-color="'#D3FFE6'"
+        :minutes-fill-color="'#ACE7C5'"
+        :size="80"
+        :padding="4"
+        :minute-label="'דקות'"
+        :second-label="'שניות'"
+        :show-second="true"
+        :show-minute="true"
+        :show-hour="false"
+        :show-negatives="false"
+        :notify-every="'minute'"
+        @finish="time_over_replace_turn"
+></circular-count-down-timer>
 
       <!-- <div v-if="need_to_fix">
         <p>  תקן את הניחוש הקודם שלך</p>
@@ -139,6 +156,24 @@ export default {
     this.check_rival_guess() // for the rival that waiting.
   },
   methods: {
+        time_over_replace_turn () {
+
+            // add empty move because the player dont to it.
+            var ref = this.ref_db.collection('moves')
+            ref.add({
+                define: "לא הוגדרה מילה",
+                num_of_words: 0,
+                words: [],
+                words_right_guess: null, // kind of temp array, for checking == 'words' array.
+                words_worng_guess: null, // when guess worng word, add to this array.
+                player_worng_guess: null, // when guess worng word, save the player
+                player_pass_guess: null, // when player dont know the guess, and want pass
+                timestamp: Date.now()
+                }).catch(err => {
+                console.log(err)
+                })
+        },
+
         setAppGetData (data) {
           this.define_word = data
         },

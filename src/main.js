@@ -10,11 +10,14 @@ import VueChatScroll from 'vue-chat-scroll'
 import firebase from 'firebase'
 import VuejsDialog from 'vuejs-dialog';
 import VuejsDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'; // only needed in custom components
- 
+import CircularCountDownTimer from "vue-circular-count-down-timer";
+
+
 // include the default style
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
  
 // Tell Vue to install the plugin.
+Vue.use(CircularCountDownTimer);
 Vue.use(VuejsDialog);
 Vue.use(VueChatScroll)
 Vue.use(BootstrapVue)

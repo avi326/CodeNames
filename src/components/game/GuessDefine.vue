@@ -13,22 +13,29 @@
           </span>
         
         </div>
-          <form class="card-panel" @submit.prevent="sendGuess">
-          <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
-          <div class="field">
-          <label class="typo__label"> בחר מילים מהלוח</label>
-          <multiselect v-model="value" label="name" track-by="code" :options="options"  
-          :searchable="true"  :allow-empty="false" :close-on-select="false" 
-          :selected="value" :taggable="true" deselect-label="חייב לבחור מילה" placeholder="חפש או בחר מילה" @update="updateValue"></multiselect>
-        </div>
-        <div class="field center">
-          <button class="btn  light-blue lighten-2">נחש! </button>
-           <p>  בחר מילים מתאימות. אם אינך יודע אתה יכול ללחוץ למטה:  </p>
-        </div>
-          </form>
-          <form class="card-panel" @submit.prevent="passGuess">
-          <button class="btn  light-blue lighten-2"> לא-יודע</button>
-          </form>
+          <div v-if="num_of_word_to_guess!='0'">
+              <form class="card-panel" @submit.prevent="sendGuess">
+              <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
+              <div class="field">
+              <label class="typo__label"> בחר מילים מהלוח</label>
+              <multiselect v-model="value" label="name" track-by="code" :options="options"  
+              :searchable="true"  :allow-empty="false" :close-on-select="false" 
+              :selected="value" :taggable="true" deselect-label="חייב לבחור מילה" placeholder="חפש או בחר מילה" @update="updateValue"></multiselect>
+            </div>
+            <div class="field center">
+              <button class="btn  light-blue lighten-2">נחש! </button>
+              <p>  בחר מילים מתאימות. אם אינך יודע אתה יכול ללחוץ למטה:  </p>
+            </div>
+              </form>
+              <form class="card-panel" @submit.prevent="passGuess">
+              <button class="btn  light-blue lighten-2"> לא-יודע</button>
+              </form>
+          </div>
+          <div v-else>
+               <form class="card-panel" @submit.prevent="passGuess">
+              <button class="btn  light-blue lighten-2">המשך כדי להגדיר</button>
+              </form>
+          </div>
 
         <div>
             <ul class="show_words_right_guess" v-chat-scroll> <!-- print all words_right_guess -->
