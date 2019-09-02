@@ -45,7 +45,6 @@ export default new Router({
         } else {
           next({name: 'Home'})
         }
-
       }
     },
     {
@@ -62,13 +61,15 @@ export default new Router({
       path: '/game',
       name: 'Game',
       component: Game,
+      meta: {
+        requiresAuth: true
+      },
       props: true,
-      beforeRouteUpdate (to, from , next) {
-        const answer = window.confirm('Do you really want to leave? Game will ended and delete!')
-        if (answer) {
-            next()
+      beforeEnter: (to, from, next) => {
+        if (to.params.conected_player) {
+          next()
         } else {
-            next(false)
+          next({name: 'TableOfGames'})
         }
       }
     }
