@@ -7,10 +7,16 @@
       <div>
         <div>
           <span  v-if="rival_define">
-              <p> השחקן היריב מאתגר אותך: </p>
-              <p>  {{ rival_define }} : {{ num_of_word_to_guess }}  </p>
-          
+              <h4> השחקן היריב מאתגר אותך: </h4>
+              <h4>  {{ rival_define }} - {{ num_of_word_to_guess }}  </h4>
           </span>
+          <div>
+              <ul class="show_words_right_guess" v-chat-scroll> <!-- print all words_right_guess -->
+              <li v-for="right_word in show_words_right_guess" :key="right_word.id">
+                  <span class="right_word">{{ right_word }} צדקת! אפשר להמשיך.</span>
+              </li>
+              </ul>
+          </div>
         
         </div>
           <div v-if="num_of_word_to_guess!='0'">
@@ -24,7 +30,7 @@
             </div>
             <div class="field center">
               <button class="btn  light-blue lighten-2">נחש! </button>
-              <p>  בחר מילים מתאימות. אם אינך יודע אתה יכול ללחוץ למטה:  </p>
+              <p>  בחר מילים מתאימות. אם אינך מצליח אתה יכול ללחוץ "לא יודע":  </p>
             </div>
               </form>
               <form class="card-panel" @submit.prevent="passGuess">
@@ -36,14 +42,6 @@
               <button class="btn  light-blue lighten-2">המשך כדי להגדיר</button>
               </form>
           </div>
-
-        <div>
-            <ul class="show_words_right_guess" v-chat-scroll> <!-- print all words_right_guess -->
-            <li v-for="right_word in show_words_right_guess" :key="right_word.id">
-                <span class="right_word">{{ right_word }} צדקת! אפשר להמשיך.</span>
-            </li>
-            </ul>
-        </div>
       </div>
     </div>
 </template>

@@ -197,7 +197,7 @@ export default {
                 map_player_two: map_board_player_two,
                 num_of_moves: 0,
                 table_board: tableBoard,
-                turn: 1
+                turn: "define"
             }).catch(err => {
                 console.log(err)
           })

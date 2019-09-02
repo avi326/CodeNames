@@ -52,7 +52,7 @@
               <h5> תור היריב לשחק...   </h5>
               <p>  אתה יכול בנתיים להסתכל על הלוח ולתכנן את המהלך הבא! </p>
                   <circular-count-down-timer
-                :initial-value="180"
+                :initial-value="clock_time"
                 :stroke-width="5"
                 :seconds-fill-color="'#D3FFE6'"
                 :minutes-fill-color="'#ACE7C5'"
@@ -103,7 +103,9 @@ export default {
   name: 'GameMoves',
   props:{ startTurn: String,
           ref_db: Object,
-          conected_player: String
+          conected_player: String,
+          player_one: null,
+          player_two: null
         },
   components: {
     MultiSelectWords,
@@ -115,6 +117,7 @@ export default {
       alias: null,
       moves: [],
       turn: null,
+      firebase_state: "guess",
       need_to_fix: null,
       need_to_guess: null,
       define_word: null,
@@ -122,7 +125,7 @@ export default {
       words_right_guess: null,
       words_worng_guess: null,
       player_pass_guess: null,
-      clock_time: 180
+      clock_time: 480
       
       
     }
@@ -210,8 +213,27 @@ export default {
           }
 
           this.updated_clock()
-    },
-    play_the_turn() {
+    }, 
+      replace_table () {
+      
+          // replace in firebase
+              this.ref_db.
+              onSnapshot(doc => {
+                  this.firebase_state = doc.data().turn
+                  console.log("doc.data().turn: ",doc.data().turn)
+                  console.log(" turn in firebase: ",this.firebase_state)
+              });
+              // console.log(this.firebase_state, " firebase_turn =?= this.player_one ", this.player_one)
+              if (this.firebase_state == "guess") {
+                this.ref_db.update({
+                  turn: "define"
+                })
+              } else {
+                this.ref_db.update({
+                  turn: "guess"
+                })
+              }
+          
 
     },
     check_if_first_move () {
@@ -244,11 +266,14 @@ export default {
                     if (this.words_worng_guess) { //  && !this.need_to_fix
                         console.log("my guess is worng",this.words_worng_guess)
                         this.need_to_guess=false
+                        this.replace_table ()
                     } else if (this.words_right_guess && this.words.length == this.words_right_guess.length) {
                         console.log("OMG! complete guess!",this.words_right_guess.length)
                         this.need_to_guess=false
+                        this.replace_table ()
                     } else if (this.player_pass_guess) {
                       this.need_to_guess=false
+                      this.replace_table ()
                     }
                   }
                 })

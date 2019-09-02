@@ -42,7 +42,8 @@ export default {
       defineWord: null,
       value: [],
       options: [],
-      num_of_moves: null
+      num_of_moves: null,
+      firebase_state: null
     }
   },created () {
 
@@ -99,9 +100,22 @@ export default {
               list_of_words.push(arrayItem.name);
             });
 
+            // add words for each word:
+            list_of_words.forEach( main_word => {
+                  list_of_words.forEach( word => {
+                db.collection('common_words').doc(main_word).set({
+                common_words_array: firebase.firestore.FieldValue.arrayUnion(word)
+                },{ merge: true })
 
+                // remove self(main_word):
+                db.collection('common_words').doc(main_word).set({
+                common_words_array: firebase.firestore.FieldValue.arrayRemove(main_word)
+                },{ merge: true })
+              })
+            })
+           
+            // add group in define doc
             var list_of_words_to_obj = Object.assign({}, list_of_words);
-
             db.collection('word_data').doc(this.defineWord).set({
            groups_array: firebase.firestore.FieldValue.arrayUnion(list_of_words_to_obj)
             },{ merge: true }).catch(err => {
@@ -110,6 +124,7 @@ export default {
 
             this.addDefineDataToFirebase(list_of_words)
             this.increase_num_moves_by_one()
+            // this.replace_table()
 
             this.setAppGetData('True')
             this.defineWord = null
@@ -165,7 +180,28 @@ export default {
 
     }
 
-  },
+  }, replace_table () {
+      
+          // replace in firebase
+              this.ref_db.
+              onSnapshot(doc => {
+                  this.firebase_state = doc.data().turn
+                  console.log("doc.data().turn: ",doc.data().turn)
+                  console.log(" turn in firebase: ",this.firebase_state)
+              });
+              // console.log(this.firebase_state, " firebase_turn =?= this.player_one ", this.player_one)
+              if (this.firebase_state == "guess") {
+                this.ref_db.update({
+                  turn: "define"
+                })
+              } else {
+                this.ref_db.update({
+                  turn: "guess"
+                })
+              }
+          
+
+    },
   mounted() {
 
       

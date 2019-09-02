@@ -44,8 +44,8 @@
     <b-row>
         <b-col v-if="player_one && player_two">
 
-             <GameMoves v-if="turn" :startTurn="turn"  :ref_db="ref" :conected_player="conected_player"/>
-             <GameMoves v-else :ref_db="ref" :conected_player="conected_player"/>
+             <GameMoves v-if="turn" :startTurn="turn"  :ref_db="ref" :conected_player="conected_player"  :player_one="player_one" :player_two="player_two"/>
+             <GameMoves v-else :ref_db="ref" :conected_player="conected_player"  :player_one="player_one" :player_two="player_two"/>
         </b-col>
         <b-col v-else>
              <b-card>
@@ -53,18 +53,7 @@
              </b-card>
         </b-col>      
         <b-col>
-            <h3> לוח מילים</h3>
-            <table class="table table-bordered text-center words">
-                <tbody>
-
-                    <tr v-for="(i, index_i) in Math.ceil(table_board.length / 5)" :key="i">
-                        <td v-for="(word, index_j) in table_board.slice((i - 1) * 5, i * 5)" :key="word.id" :class="map_player[(index_i * 5 ) + index_j]">
-                           <span v-if="map_player[(index_i * 5 ) + index_j]=='black'" style="color: white;"> <b> {{ word }}  </b> </span>
-                           <span v-else> <b> {{ word }}  </b> </span>
-                             </td>
-                    </tr>
-                </tbody>
-            </table>
+            <TableBoard :conected_player="conected_player" :ref_db="ref"/>
         </b-col>
         <b-col>
              <GameChat v-if="player_one_alias!=null" :name="player_one_alias" :ref_db="ref" />
@@ -72,7 +61,7 @@
         </b-col>
     </b-row>
         
-    <!-- <b-row>
+    <b-row>
         <b-col>
                 <div class="mapTable">
                 <h3 class="lead text-center">מפת המשחק שלך</h3>
@@ -85,7 +74,7 @@
                 </table>
             </div>
         </b-col>
-    </b-row> -->
+    </b-row>
     </b-container>
 
 
@@ -100,6 +89,7 @@
 <script>
 import GameChat from '@/components/game/GameChat'
 import GameMoves from '@/components/game/GameMoves'
+import TableBoard from '@/components/game/TableBoard'
 import db from '@/firebase/init'
 
 export default {
@@ -121,7 +111,8 @@ data () {
 },
 components: {
     GameChat,
-    GameMoves
+    GameMoves,
+    TableBoard
 },
 
 // destroyed() {
@@ -137,7 +128,6 @@ created () {
     this.init_firebase_game ()
     // this.getNumOfMoves ()
 
-    // var cityRef = db.collection('games').doc('UwaFbzVh4MPyhzLbDNrx').set({player_one_alias: this.player_one_alias, player_two_alias: this.player_two_alias})
     var getDoc = this.ref
     .get()
     .then(doc => {
@@ -176,15 +166,11 @@ created () {
 
 
             // we init turn to player 1
-            if (this.turn==this.player_one_alias) {
-                this.ref.update({
-                   turn: doc.data().alias_player_one
-                })
-            } else {
-                this.ref.update({
-                   turn: doc.data().alias_player_two
-                })
-            }
+            // if (this.turn==this.player_one_alias) {
+            //     this.ref.update({
+            //        turn: "this.player_one_alias"
+            //     })
+            // } 
         } 
     })
     .catch(err => {
