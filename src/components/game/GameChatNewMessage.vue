@@ -1,8 +1,8 @@
 <template>
     <div class="new-message">
     <form @submit.prevent="addMessage">
-      <label for="new-message"> הקלד כאן: </label>
-      <input type="text" name="new-message" v-model="newMessage">
+      <label for="new-message"> הודעה חדשה:  </label>
+      <input type="text" name="new-message"   placeholder="כתוב כאן מה שבא לך לשחקן השני"   v-model="newMessage">
       <p v-if="feedback">{{ feedback }}</p>
     </form>
     </div>

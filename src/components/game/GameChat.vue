@@ -1,16 +1,26 @@
 <template>
-    <div class="chat">
-        <h3> צ'אט משחק </h3>
-            <b-card>
+    <div class="chat_div">
+        <h4>  צ'אט </h4>
+         <h6> פה אפשר לדבר עם עם השני </h6>
+                <div  class="chat">
                 <ul class="messages" v-chat-scroll> <!-- print all message -->
-                <li v-for="message in messages" :key="message.id">
-                    <span class="name">{{ message.name }}</span>
-                    <span class="content">{{ message.content }}</span>
-                    <span class="time">{{ message.timestamp }}</span>
-                </li>
+                  <li v-for="message in messages" :key="message.id">
+                    <p class="me" v-if="name==message.name">
+                      <span class="name">{{ message.name }}</span>
+                      <span class="time">{{ message.timestamp }}</span>  <br>
+                      <span class="content me">{{ message.content }}</span>
+                    </p>
+                    <p v-else>
+                      <span class="name">{{ message.name }}</span>
+                      <span class="time">{{ message.timestamp }}</span>  <br>
+                      <span class="content rival">{{ message.content }}</span>
+                    </p>  
+                  </li>      
                 </ul>
-                 <GameChatNewMessage :name="name" :ref_db="ref_db"/>
-            </b-card>
+                </div>
+                <b-card>
+                    <GameChatNewMessage :name="name" :ref_db="ref_db"/>
+                </b-card>
             
     </div>
 
@@ -31,11 +41,23 @@ export default {
   },
   data(){
     return{
-      messages: []
+      messages: [],
+      oldTime: '',
+      ago: ''
     }
   },
   created(){
-    //TODO: Get the right chat from the specific game. First need to create the collection (look at other TODO)
+    // update time
+    this.oldTime = new Date();
+    setInterval(() => {
+      this.messages.forEach( messege => {
+        messege.timestamp = moment(this.oldTime).fromNow()
+      })
+    }, 1000)
+
+    // change moment to hebrew
+    moment.locale('he')
+
     var ref = this.ref_db.collection('chat').orderBy('timestamp')
     
     // subscribe to changes to the 'messages' collection
@@ -48,7 +70,7 @@ export default {
             id: doc.id,
             name: doc.data().name,
             content: doc.data().content,
-            timestamp: moment(doc.data().timestamp).format('lll')
+            timestamp: moment().startOf(doc.data().timestamp).fromNow()
           })
         }
       })
@@ -58,15 +80,49 @@ export default {
 </script>
 
 <style scoped>
-span.name {
-color: rgb(138, 131, 42);
-font-size: 20px
+div.chat {
+ background:url('https://i.pinimg.com/originals/79/5c/ab/795cabc4647f73b365e2e6eabd0f34dc.png') no-repeat;
 }
 
-span.content {
+div.chat_div {
+background: rgb(255, 253, 240);
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+p.me {
+  text-align: left;
+  direction: rtl;
+}
+
+p {
+  text-align: right;
+  direction: rtl;
+}
+
+span.name {
+color: black;
+font-size: 14px;
+font-weight: bold;
+
+
+}
+span.content.rival {
 font-size: 15px;
-color: rgb(76, 77, 24);
-font-style: inherit
+color: rgb(0, 0, 0);
+font-style: inherit;
+font-weight: normal;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+background: rgb(255, 255, 255);
+}
+
+span.content.me {
+font-size: 15px;
+color: rgb(0, 0, 0);
+font-style: inherit;
+font-weight: normal;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+background: #DCF8C6;
 }
 
 span.time {

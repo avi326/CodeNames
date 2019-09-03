@@ -56,8 +56,7 @@
             <TableBoard :conected_player="conected_player" :ref_db="ref"/>
         </b-col>
         <b-col>
-             <GameChat v-if="player_one_alias!=null" :name="player_one_alias" :ref_db="ref" />
-             <GameChat v-else :name="player_two_alias" :ref_db="ref"/>
+             <GameChat :name="conected_player" :ref_db="ref" />
         </b-col>
     </b-row>
         
