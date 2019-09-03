@@ -7,8 +7,10 @@
       <div>
         <div>
           <span  v-if="rival_define">
-              <h4> השחקן היריב מאתגר אותך: </h4>
-              <h4>  {{ rival_define }} - {{ num_of_word_to_guess }}  </h4>
+              <h5> השחקן היריב מאתגר אותך: </h5>
+              <h3 style="background:PowderBlue; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"> 
+                 {{ rival_define }} - {{ num_of_word_to_guess }}
+                 </h3>
           </span>
           <div>
               <ul class="show_words_right_guess" v-chat-scroll> <!-- print all words_right_guess -->
