@@ -192,7 +192,14 @@ created () {
     this.getNumOfMoves()
     this.get_alias_players()
 
-},
+}, beforeDestroy () {
+    var self = this
+        setTimeout(function(){
+            self.$dialog.alert('המשחק הסתיים! תודה שהשתתפת. ').then(dialog => {
+        })
+    }, 2000);
+
+}, 
 destroyed () {
 
     console.log("game over")
