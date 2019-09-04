@@ -4,11 +4,11 @@
       <h2 class="center deep-purple-text"></h2>
       <div class="field">
         <label for="email">אימייל</label>
-        <input id="email" type="email" v-model="email">
+        <input id="email" type="email" v-model="email" />
       </div>
       <div class="field">
         <label for="password">סיסמא</label>
-        <input id="password" type="password" v-model="password">
+        <input id="password" type="password" v-model="password" />
       </div>
       <p v-if="feedback" class="red-text center">{{ feedback }}</p>
       <div class="field center">
@@ -19,43 +19,46 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from "firebase";
 export default {
-  name: 'Login',
-  data(){
-    return{
+  name: "Login",
+  data() {
+    return {
       email: null,
       password: null,
       feedback: null
-    }
+    };
   },
   methods: {
-    login(){
-      if(this.email && this.password){
-        this.feedback = null
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .then(cred => {
-          this.$router.push({ name: 'TableOfGames' })
-        }).catch(err => {
-          this.feedback = err.message
-        })
+    login() {
+      if (this.email && this.password) {
+        this.feedback = null;
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password)
+          .then(cred => {
+            this.$router.push({ name: "TableOfGames" });
+          })
+          .catch(err => {
+            this.feedback = err.message;
+          });
       } else {
-        this.feedback = 'Please fill in both fields'
+        this.feedback = "Please fill in both fields";
       }
     }
   }
-}
+};
 </script>
 
 <style>
-.login{
+.login {
   max-width: 400px;
   margin-top: 60px;
 }
-.login h2{
+.login h2 {
   font-size: 2.4em;
 }
-.login .field{
+.login .field {
   margin-bottom: 16px;
 }
 </style>
