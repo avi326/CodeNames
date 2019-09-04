@@ -75,10 +75,18 @@
                 </ul>
             </b-card>
             <b-card v-if="words_worng_guess"> 
-             
+                <span v-if="words_right_guess">
+                <span> היריב צדק במילים:  </span> <br>
+                    <ul class="words_right_guess" v-chat-scroll> <!-- print all words_right_guess -->
+                    <li v-for="right_word in words_right_guess" :key="right_word.id">
+                        <span class="right_word"> <b> {{ right_word }} </b> </span>
+                    </li>
+                    </ul>
+                </span>
+               <span> אבל טעה ב:  </span> <br>
                 <ul class="words_worng_guess" v-chat-scroll> <!-- print all words_right_guess -->
                 <li v-for="worng_word in words_worng_guess" :key="worng_word.id">
-                    <span class="worng_word"> היריב בחר את המילה  <b> {{ worng_word }} </b> וטעה</span>
+                    <span class="worng_word">  <b> {{ worng_word }} </b> </span>
                 </li>
                 </ul>
             </b-card>
@@ -382,4 +390,10 @@ font-style: inherit
   background: #aaa; 
 }
 
+span.worng_word {
+  color: rgb(105, 18, 18)
+}
+span.right_word {
+  color: rgb(45, 110, 45)
+}
 </style>
