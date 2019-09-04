@@ -40,7 +40,7 @@
         <b-card v-else-if="words_right_guess && words && words_right_guess.length==words.length">
             <span class="right_word"> הצלחת לנחש את כל המילים!  </span>
         </b-card>
-        <p> אתגר את השחקן השני! </p>
+        <p> תורך לבחור מילים ולהגדיר אותם:  </p>
         <MultiSelectWords v-if="startTurn!=null" :blue_words="'blue_words_player_one'" :setAppGetData="setAppGetData"  :ref_db="ref_db"/>
         <MultiSelectWords v-else :blue_words="'blue_words_player_two'" :setAppGetData="setAppGetData"  :ref_db="ref_db"/>
       </div>

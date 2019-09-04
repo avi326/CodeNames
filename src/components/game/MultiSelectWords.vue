@@ -4,11 +4,12 @@
         <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
          <div class="field">
         <label class="typo__label"> בחר מרשימת המילים שלך</label>
-        <multiselect v-model="value" tag-placeholder="הוסף מילה זו" placeholder="חפש או בחר מילה" label="name" track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+        <multiselect v-model="value" tag-placeholder="הוסף מילה זו" placeholder="חפש או בחר מילה" label="name" 
+        track-by="code" :options="options" :multiple="true"></multiselect>
       </div>
       <div class="field">
         <label for="name">כתוב מילה שמגדירה את המלים שבחרת: </label>
-        <input id="name" type="text" v-model="defineWord">
+        <input id="name" type="text" v-model="defineWord" placeholder="כתוב כאן את ההגדרה שלך" >
         <p v-if="feedback" class="center">{{ feedback }}</p>
       </div>
       <div>

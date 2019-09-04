@@ -26,14 +26,14 @@
               <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
               <div class="field">
               <label class="typo__label"> בחר מילים מהלוח</label>
-              <multiselect v-model="value" label="name" track-by="code" :options="options"  
-              :searchable="true"  :allow-empty="false" :close-on-select="false" 
-              :selected="value" :taggable="true" deselect-label="חייב לבחור מילה" placeholder="חפש או בחר מילה" @update="updateValue"></multiselect>
+              <multiselect v-model="value" label="name" track-by="code"  :options="options"  
+              :searchable="true"  :allow-empty="false" :close-on-select="true" 
+              :selected="value" deselect-label="חייב לבחור מילה" placeholder="חפש או בחר מילה" @update="updateValue"></multiselect>
             </div>
-            <div class="field center">
-              <button class="btn  light-blue lighten-2">נחש! </button>
-              <p>  בחר מילים מתאימות. אם אינך מצליח אתה יכול ללחוץ "לא יודע":  </p>
-            </div>
+             <span v-if="value"> <label class="typo__label">בטוח שהמילה <b>{{ value.name }}</b> מתאימה להגדרה <b>{{ rival_define }}</b>? </label> </span>
+              <button class="btn  light-blue lighten-2">בטוח </button>
+              <br>
+               <label class="typo__label">   אם אתה לא מצליח, אתה יכול ללחוץ לא יודע:  </label>
               </form>
               <form class="card-panel" @submit.prevent="passGuess">
               <button class="btn  light-blue lighten-2"> לא-יודע</button>
