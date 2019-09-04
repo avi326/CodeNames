@@ -8,7 +8,7 @@
       </b-row>
       <b-row  class="justify-content-md-center">
         <b-col md="auto">
-          <p v-if="alias">hello {{ alias }} </p>
+          <p v-if="alias" style="text-align: right;  direction: rtl;" >ברוך הבא <b>{{ alias }}</b>, אתה יכול להתחיל לשחק!  </p>
           <p v-else> שלום אורח, בבקשה <router-link :to="{ name: 'Signup'}"> הירשם  </router-link> או <router-link :to="{ name: 'Login'}">
             התחבר 
             <i class="fa fa-header" aria-hidden="true"></i> </router-link>  </p>
@@ -16,7 +16,10 @@
       </b-row>
       <b-row  class="justify-content-md-center">
         <b-col md="auto">
-            <table v-if="alias">
+            <p style="text-align: right;  direction: rtl;">  אם יש מישהו שאתה רוצה לשחק איתו - תחפש אותו ברשימה ולחץ <b> הצטרף למשחק</b>. <br>
+            אחרת, לחץ למטה על <b> משחק חדש </b> ותחכה שהוא יצטרף אליך. <br>
+              אם אין מישהו שקבעת איתו. פתח <b> משחק חדש </b> ותחכה שיצטרפו אליך.  </p>
+            <table v-if="alias" style="text-align: right;  direction: rtl;">
               <thead>
                 <tr>
                     <th>שחקן ראשון </th>
@@ -36,7 +39,7 @@
 
                 </tr>
                 <tr>
-                  <td><NewGame :alias="alias"/></td>
+                  <td   style="text-align: left;  direction: rtl;"><NewGame :alias="alias"/></td>
                 </tr>
               </tbody>
             </table>

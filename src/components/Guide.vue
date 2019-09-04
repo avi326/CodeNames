@@ -6,7 +6,7 @@
             <b-row>
                 <b-col></b-col>
                 <b-col>
-                    <h3> מדריך </h3>
+                    <h3 tyle="text-align: center;"> מדריך </h3>
                         <p dir="rtl" style="direction: rtl; text-align: right; "> 
                 <b>  המשחק מיועד לשני שחקנים.  </b> <br>
                 ראשית נפתחות 25 מילים.<br>

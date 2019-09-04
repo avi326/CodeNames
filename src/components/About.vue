@@ -16,10 +16,15 @@
         <b-col>
 
             
-       <p style="direction: rtl; text-align: right; "> 
+       <p> 
         עבודת מחקר של אבי ברזני ודוד פנירי במסגרת קורס "עיבוד שפה טבעית" באוניברסיטה הפתוחה.
         </p>
-
+       <p> 
+      אבי ברזני: avibarazani326@gmail.com
+        </p>
+               <p> 
+        דוד פנירי: dudupaniri@gmail.com
+        </p>
         </b-col>
         <b-col></b-col>
       </b-row>
@@ -48,6 +53,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+ p {
+   direction: rtl; 
+   text-align: right; 
+ }
 </style>

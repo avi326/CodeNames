@@ -1,7 +1,7 @@
 <template>
     <div class="new-message">
     <form @submit.prevent="addGame">
-        <button class="btn deep-purple"> add_game</button>  
+        <button class="btn light-blue lighten-2"> משחק-חדש</button>  
     </form>
     <p v-if="newGame"> {{ newGame }} </p>
     </div>

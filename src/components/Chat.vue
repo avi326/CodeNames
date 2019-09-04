@@ -4,8 +4,8 @@
             <b-card>
                 <ul class="messages" style="text-align: right;" v-chat-scroll> <!-- print all message -->
                 <li v-for="message in messages" :key="message.id" >
-                    <span class="name">{{ message.name }}</span>
-                    <span class="content">{{ message.content }}</span>
+                    <span class="name">{{ message.name }}</span> <br>
+                    <span class="content">{{ message.content }}</span> <br> 
                     <span class="time">{{ message.timestamp }}</span>
                 </li>
                 </ul>
@@ -37,6 +37,9 @@ export default {
     }
   },
   created(){
+    // change moment to hebrew
+    moment.locale('he')
+
     let ref = db.collection('messages').orderBy('timestamp')
     
     // subscribe to changes to the 'messages' collection
@@ -49,7 +52,7 @@ export default {
             id: doc.id,
             name: doc.data().name,
             content: doc.data().content,
-            timestamp: moment(doc.data().timestamp).format('lll')
+            timestamp: moment(doc.data().timestamp).calendar()
           })
         }
       })
