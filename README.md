@@ -1,6 +1,20 @@
 # code_name
 
-> A Vue.js project
+> A Vue.js project 
+
+The project saved and hosted in Firebase web under the address:
+https://console.firebase.google.com/project/code-names-project/overview
+Also it's included users authentication database storage and analytics. 
+
+# Data
+
+The data found under the project address in 'Database' tab (https://console.firebase.google.com/project/code-names-project/database).
+The input data (the games words) and the output data (the collected words and connections) is found in the tables.
+
+Please notice we added full viewer permission for the known emails (so need to have Firebase account):
+openu.nlp.course@gmail.com (Invitation already approved to view project because google account)
+reutts@openu.ac.il (Need to your approve to the invitation and than view)
+matansa@openu.ac.il (Need to your approve to the invitation and than view)
 
 ## Build Setup
 
