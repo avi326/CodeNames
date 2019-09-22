@@ -6,6 +6,15 @@ The project saved and hosted in Firebase web under the address:
 https://console.firebase.google.com/project/code-names-project/overview
 Also it's included users authentication database storage and analytics. 
 
+The game is online and enabled to play in this address:
+https://code-names-project.firebaseapp.com
+The game is available on PC and also in mobile (beta). You can find in the game menu also a guide for the game rules.
+Also you can find more explanation about the game here and and in the guide file: codenames-rules-he.pdf.
+
+Main game screens:
+
+![Alt text](/CodeNames/Game ScreenShots/BoardOfGame.JPG?raw=true "BoardOfGame")
+
 # Data
 
 The data found under the project address in 'Database' tab (https://console.firebase.google.com/project/code-names-project/database).
