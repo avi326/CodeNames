@@ -13,7 +13,7 @@ Also you can find more explanation about the game here and and in the guide file
 
 Main game screens:
 
-![Alt text](/CodeNames/Game ScreenShots/BoardOfGame.JPG?raw=true "BoardOfGame")
+![Alt text](/Game ScreenShots/BoardOfGame.JPG?raw=true "BoardOfGame")
 
 # Data
 
